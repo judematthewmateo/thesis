@@ -60,6 +60,8 @@ Route::middleware('auth:api')->group(function () {
     //Check if department was used
     Route::get('departmentcheck/{id}', 'References\DepartmentsController@checkIfUsed');
     // END departments
-    
+
+    Route::get('reports', 'Utilities\StaffsController@index');
+    Route::get('report/{id}', 'Utilities\StaffsController@show');
  
 });

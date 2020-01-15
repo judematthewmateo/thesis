@@ -6,6 +6,8 @@ import Full from "@/containers/Full";
 
 // Views
 import Dashboard from "@/views/Dashboard";
+import Staff from "@/views/Staff";
+import Client from "@/views/Client";
 
 // Views - Pages
 import Page404 from "@/views/pages/Page404";
@@ -70,7 +72,20 @@ const router = new Router({
 
           ]
         },
+
       ]
+    },
+
+
+    {
+      path: "/staff",
+      name: "Staff",
+      component: Staff
+    },
+    {
+      path: "/client",
+      name: "Client",
+      component: Client
     },
     {
       path: "/register",
@@ -91,7 +106,8 @@ const router = new Router({
       path: "*",
       name: "404",
       component: Page404
-    }
+    },
+
   ]
 });
 export default router;
