@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -57,7 +56,7 @@ const axiosConfig = {
 
 Vue.component('icon', Icon)
 Vue.component('App', require('./App.vue'))
-Vue.component('select2', require('./select2/Sele\ct2'))
+Vue.component('select2', require('./select2/Select2'))
 Vue.component('vue-autonumeric', require('vue-autonumeric'))
 window.$ = window.jQuery = require('jquery')
 Vue.use(BootstrapVue)
@@ -74,10 +73,12 @@ Vue.prototype.$http.interceptors.response.use(response => {
   NProgress.done()
   return response
 }, error => {
-  if(error.response.status === 401 || error.response.status === 403){
+  if (error.response.status === 401 || error.response.status === 403) {
     store.commit('logoutUser')
     localStorage.setItem('token', '')
-    router.push({name: 'Login'})
+    router.push({
+      name: 'Login'
+    })
   }
   NProgress.done()
   return Promise.reject(error)

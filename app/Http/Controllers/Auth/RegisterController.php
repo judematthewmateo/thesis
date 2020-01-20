@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Utilities;
+namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
-use App\User;
+use App\Staff;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Reference;
 use Carbon\Carbon;
@@ -20,8 +20,8 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        $users = User::where('is_deleted', 0)->get();                           
-        return Reference::collection($users);
+        $registerstaff = Staff::where('is_deleted', 0)->get();                           
+        return Reference::collection($registerstaff);
     }
 
     /**
@@ -30,29 +30,32 @@ class RegisterController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
-    {   
-        Validator::make($request->all(),
+     {
+       Validator::make($request->all(),
             [
-                'username' => 'required|string|max:255|unique:b_users',
+                'username' => 'required|string|max:255|unique:tb_users',
                 'password' => 'required|string|min:6|confirmed',
-                'email' => 'required|string|email|max:255|unique:b_users'
+                'contact_number' => '|min:11|max:11|confirmed',
+              
             ]
         )->validate();
 
-        $user = new User();
-        $user->username = $request->input('username');
-        $user->password = Hash::make($request->input('password'));
-        $user->email = $request->input('email');
-        $user->firstname = $request->input('firstname');
-        $user->middlename = $request->input('middlename');
-        $user->lastname = $request->input('lastname');
-        $user->created_datetime = Carbon::now();
-        $user->created_by = Auth::user()->id;
+        $registerstaff = new Staff();
+        $registerstaff->account_no = DB::select("select CreateAccountNo() as account_no")[0]->account_no;
+        $registerstaff->username = $request->input('username');
+        $registerstaff->password = Hash::make($request->input('password'));
+        $registerstaff->staff_name = $request->input('staff_name');
+        $registerstaff->contact_number = $request->input('contact_number');
+        $registerstaff->department_id = $request->input('department_id');
+        $registerstaff->user_type_id = $request->input('user_type_id');
+         $registerstaff->id_number = $request->input('id_number');
+        $registerstaff->created_datetime = Carbon::now();
+        $registerstaff->created_by = Auth::user()->id;
 
-        $user->save();
+        $registerstaff->save();
 
         //return json based from the resource data
-        return ( new Reference( $user ))
+        return ( new Reference( $registerstaff ))
                 ->response()
                 ->setStatusCode(201);
     }
@@ -76,9 +79,9 @@ class RegisterController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        $registerstaff = Staff::findOrFail($id);
 
-        return ( new Reference( $user ) )
+        return ( new Reference( $registerstaff ) )
             ->response()
             ->setStatusCode(200);
     }
@@ -103,31 +106,31 @@ class RegisterController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Validator::make($request->all(),
-            [
-                'username' => 'required|string|max:255|unique:b_users,username,'.$id,
-                'password' => 'required|string|min:6|confirmed',
-                'email' => 'required|string|email|max:255|unique:b_users,email,'.$id
+        // Validator::make($request->all(),
+        //     [
+        //         'username' => 'required|string|max:255|unique:b_users,username,'.$id,
+        //         'password' => 'required|string|min:6|confirmed',
+        //         'email' => 'required|string|email|max:255|unique:b_users,email,'.$id
                 
-            ]
-        )->validate();
+        //     ]
+        // )->validate();
 
-        $user = User::findOrFail($id);
-        $user->username = $request->input('username');
-        $user->password = Hash::make($request->input('password'));
-        $user->email = $request->input('email');
-        $user->firstname = $request->input('firstname');
-        $user->middlename = $request->input('middlename');
-        $user->lastname = $request->input('lastname');
-        $user->modified_datetime = Carbon::now();
-        $user->modified_by = Auth::user()->id;
+        // $user = User::findOrFail($id);
+        // $user->username = $request->input('username');
+        // $user->password = Hash::make($request->input('password'));
+        // $user->email = $request->input('email');
+        // $user->firstname = $request->input('firstname');
+        // $user->middlename = $request->input('middlename');
+        // $user->lastname = $request->input('lastname');
+        // $user->modified_datetime = Carbon::now();
+        // $user->modified_by = Auth::user()->id;
 
-        $user->save();
+        // $user->save();
 
-        //return json based from the resource data
-        return ( new Reference( $user ))
-                ->response()
-                ->setStatusCode(201);
+        // //return json based from the resource data
+        // return ( new Reference( $user ))
+        //         ->response()
+        //         ->setStatusCode(201);
     }
 
     /**
@@ -140,17 +143,17 @@ class RegisterController extends Controller
      */
     public function delete($id)
     {
-        $user = User::findOrFail($id);
-        $user->is_deleted = 1;
-        $user->deleted_datetime = Carbon::now();
-        $user->deleted_by = Auth::user()->id;
+        // $user = User::findOrFail($id);
+        // $user->is_deleted = 1;
+        // $user->deleted_datetime = Carbon::now();
+        // $user->deleted_by = Auth::user()->id;
 
-        //update classification based on the http json body that is sent
-        $user->save();
+        // //update classification based on the http json body that is sent
+        // $user->save();
 
-        return ( new Reference( $user ) )
-            ->response()
-            ->setStatusCode(200);
+        // return ( new Reference( $user ) )
+        //     ->response()
+        //     ->setStatusCode(200);
     }
 
     /**

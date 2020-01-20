@@ -26,10 +26,7 @@ Route::group([
 
 });
 
-
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// }); 
+ 
 Route::middleware('auth:api')->group(function () {
 
     Route::get('dashboard/index/{payment_type}', 'References\DashboardController@index');
@@ -63,5 +60,31 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('reports', 'Utilities\StaffsController@index');
     Route::get('report/{id}', 'Utilities\StaffsController@show');
- 
+
+
+    Route::get('staffs', 'References\StaffsController@index');
+    //List single category
+    Route::get('staff/{id}', 'References\StaffsController@show');
+    //Create new category
+    Route::post('staff', 'References\StaffsController@create');
+    //Update category
+    Route::put('staff/{id}', 'References\StaffsController@update');
+    //Delete category
+    Route::put('staff/delete/{id}', 'References\StaffsController@delete');
+    //Check if category was used
+    Route::get('staffcheck/{id}', 'References\StaffsController@checkIfUsed');
+
+    Route::get('clients', 'References\ClientsController@index');
+    //List single category
+    Route::get('client/{id}', 'References\ClientsController@show');
+    //Create new category
+    Route::post('client', 'References\ClientsController@create');
+    //Update category
+    Route::put('client/{id}', 'References\ClientsController@update');
+    //Delete category
+    Route::put('client/delete/{id}', 'References\ClientsController@delete');
+    //Check if category was used
+    Route::get('clientcheck/{id}', 'References\ClientsController@checkIfUsed');
+
+    
 });

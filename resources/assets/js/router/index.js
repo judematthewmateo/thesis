@@ -6,19 +6,22 @@ import Full from "@/containers/Full";
 
 // Views
 import Dashboard from "@/views/Dashboard";
-import Staff from "@/views/Staff";
-import Client from "@/views/Client";
+
 
 // Views - Pages
 import Page404 from "@/views/pages/Page404";
 import Page500 from "@/views/pages/Page500";
 import Login from "@/views/pages/Login";
 import Logout from "@/views/pages/Logout";
-import Register from "@/views/pages/Register";
+import RegisterStaff from "@/views/pages/RegisterStaff";
+import RegisterClient from "@/views/pages/RegisterClient";
 
-import users from "@/views/references/Users";
+import staff from "@/views/staff";
+
+
 import departments from "@/views/references/Departments";
-
+import staffs from "@/views/references/Staffs";
+import clients from "@/views/references/Clients";
 
 
 import store from "../store";
@@ -51,25 +54,25 @@ const router = new Router({
               return c("router-view");
             }
           },
-          children: [{
 
-              path: "users",
-              name: "All users",
-              component: users,
-              meta: {
-                requiresAuth: true
-              }
-            },
-            {
+          children: [{
               path: "departments",
               name: "Departments",
               component: departments,
-              meta: {
-                requiresAuth: true
-              }
+
             },
+            {
+              path: "clients",
+              name: "Clients",
+              component: clients,
 
+            },
+            {
+              path: "staffs",
+              name: "Staffs",
+              component: staffs,
 
+            },
           ]
         },
 
@@ -77,20 +80,22 @@ const router = new Router({
     },
 
 
+
+
+    {
+      path: "/registerstaff",
+      name: "Register Staff",
+      component: RegisterStaff
+    },
     {
       path: "/staff",
       name: "Staff",
-      component: Staff
+      component: staff
     },
     {
-      path: "/client",
-      name: "Client",
-      component: Client
-    },
-    {
-      path: "/register",
-      name: "Register",
-      component: Register
+      path: "/registerclient",
+      name: "Register Client",
+      component: RegisterClient
     },
     {
       path: "/login",

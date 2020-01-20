@@ -6,20 +6,21 @@ export default {
     },
     {
       name: 'References',
-      url: '/references',
-      icon: 'icon-book-open',
-      children: [{
-          name: 'All users',
-          url: '/references/users',
-          icon: 'icon-list'
-        },
-
-        {
-          name: 'Departments',
-          url: '/references/departments',
-          icon: 'icon-list'
-        },
-      ]
-    }
+    },
+    {
+      name: 'Staffs',
+      url: '/references/staffs',
+      icon: 'icon-list'
+    },
+    {
+      name: 'Clients',
+      url: '/references/clients',
+      icon: 'icon-list'
+    },
+    {
+      name: 'Departments',
+      url: '/references/departments',
+      icon: 'icon-list'
+    },
   ],
 }

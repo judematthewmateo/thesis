@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Utilities;
 
 use Illuminate\Http\Request;
-use App\Models\Utilities\Staff; // model of table
+use App\Models\Utilities\Report;
+use App\Models\Utilities\Client; // model of table
 use App\Http\Controllers\Controller;
 use App\Models\References\Department;
 use App\Http\Resources\Reference;
@@ -21,24 +22,23 @@ class StaffsController extends Controller
      */
     public function index()
     {
-        $data['reports'] = Staff::select(
+        $data['reports'] = Report::select(
             'tb_reports.*',
-            'rd.department_name'
+            'rd.department_name',
+            'tc.client_name' , 
+            'tc.account_no'
  )
                     ->leftJoin('refdepartment as rd', 'rd.department_id', '=', 'tb_reports.department_id')
+                    ->leftJoin('tb_clients as tc', 'tc.client_id', '=', 'tb_reports.client_id')
                     ->where('tb_reports.is_deleted', 0)
                     ->where('tb_reports.is_received', 0)
+                    ->where('tb_reports.is_done', 0)
                     ->orderBy('report_id', 'desc')
                     ->get();
 
-        // $data['products'] = Product::leftJoin('refunit', 'refunit.unit_id', 'refproduct.unit_id')
-        //             ->leftJoin('refcategory', 'refcategory.category_id', 'refproduct.category_id')
-        //             ->leftJoin('refsupplier', 'refsupplier.supplier_id', 'refproduct.supplier_id')
-        //             ->where('refproduct.is_deleted', 0)
-        //             ->orderBy('refproduct.product_id')
-        //             ->get();
-
-         $data['departments'] = Department::where('is_deleted', 0)->orderBy('department_id')->get();
+       
+        $data['clients'] = Client::where('is_deleted', 0)->orderBy('client_id')->get();
+        $data['departments'] = Department::where('is_deleted', 0)->orderBy('department_id')->get();
 
         return $data;
 
@@ -199,11 +199,4 @@ class StaffsController extends Controller
         //
     }
 
-     public function GetReport($report_id)
-    {
-        $report = Staff::leftJoin('refunit', 'refunit.unit_id', 'refproduct.unit_id')
-                        ->where('refproduct.is_deleted', 0);
-                    
-        return $report;
-    }
 }

@@ -155,9 +155,10 @@ label {
                     <b-button
                       variant="primary"
                       size="sm"
-                      @click="row.toggleDetails(row)"
+                      @click="row.toggleDetails"
                     >{{ row.detailsShowing ? 'Hide' : 'Show'}} Details</b-button>
                   </template>
+
                   <template v-slot:row-details="row">
                     <b-card>
                       <b-row class="mb-2">
@@ -167,7 +168,11 @@ label {
                         <b-col lg="3">
                           <b-row class="mb-2">
                             <b-col>
-                              <b>Report No. :</b>
+                              <b>
+                                Report No. :
+                                <!-- action slot  :to="{path: 'products/' + data.item.id } -->
+                                {{report_id}}
+                              </b>
                             </b-col>
                           </b-row>
                           <!-- <b-col>{{ row.item.age }}</b-col> -->
@@ -252,7 +257,11 @@ export default {
           isSaving: false,
           isDeleting: false,
           fields: {
-            report_id: null
+            report_id: null,
+            account_no: null,
+            client_name: null,
+            department_name: null,
+            send_datetime: null
           }
         }
       },
@@ -267,8 +276,15 @@ export default {
               sortable: true
             },
             {
-              key: "report_by",
-              label: "Report by",
+              key: "account_no",
+              label: "Account Number",
+              thStyle: { width: "150px" },
+              tdClass: "align-middle",
+              sortable: true
+            },
+            {
+              key: "client_name",
+              label: "Reported by",
               tdClass: "align-middle",
               sortable: true
             },
@@ -327,7 +343,6 @@ export default {
   },
   created() {
     this.$http
-
       .get("api/reports", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")

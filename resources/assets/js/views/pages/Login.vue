@@ -12,6 +12,13 @@
   background-repeat: no-repeat;
   background-position: center;
 }
+.titlelabeltop {
+  font-size: 15px;
+}
+
+.titlelabelbot {
+  font-size: 12px;
+}
 </style>
 <template>
 <!-- style="background-image: url(images/login/login.jpg); background-position: center; background-repeat: no-repeat;background-size:contain;" -->
@@ -70,10 +77,32 @@
                 <h2>Sign up</h2>
                 <p>Create your account to enjoy the benefits of this system.</p>
 
-                <b-button variant="primary">Register Now!</b-button>
+                <b-button variant="primary" @click="UsertypeModal = !UsertypeModal">Register Now!</b-button>
               </div>
             </div>
           </div>
+          <div>
+            <!-- modal div -->
+            <b-modal v-model="UsertypeModal" :noCloseOnBackdrop="true">
+              <div slot="modal-title" style="height:15px">
+                <!-- modal title -->
+                <label class="titlelabel">Please choose your kind of User.</label>
+                <p class="titlelabelbot">
+                  <i class="fa fa-info-circle" aria-hidden="true"></i>
+                  NOTE : Make sure you enter your right User Type.
+                </p>
+              </div>
+              <div class="row justify-content-center">
+                <b-button size="lg" class="m-3" variant="primary" href="/#/registerstaff">Technician</b-button>
+                <b-button size="lg" class="m-3" variant="success" href="/#/registerclient">Client</b-button>
+              </div>
+              <!-- modal footer buttons -->
+              <div slot="modal-footer">
+                <!-- modal footer buttons -->
+              </div>
+            </b-modal>
+          </div>
+          <!-- modal div -->
         </div>
       </div>
     </div>
@@ -86,6 +115,7 @@ export default {
   name: "Login",
   data() {
     return {
+      UsertypeModal: false,
       login: {
         username: null,
         password: null,
