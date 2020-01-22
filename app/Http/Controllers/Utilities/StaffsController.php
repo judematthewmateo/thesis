@@ -112,10 +112,12 @@ class StaffsController extends Controller
                                                 ->findOrFail($id);
 
           
-        return $data;
+               
          
     }
 
+
+    
     /**
      * Show the form for editing the specified resource.
      *

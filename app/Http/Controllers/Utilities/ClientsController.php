@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Utilities;
 
 use Illuminate\Http\Request;
-use App\Models\Utilities\Client; // model of table
+use App\User;
+use App\Usertype; // model of table
 use App\Http\Controllers\Controller;
 use App\Models\References\Department;
 use App\Http\Resources\Reference;
@@ -20,31 +21,25 @@ class ClientsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $data['reports'] = Client::select(
-            'tb_reports.*',
-            'rd.department_name'
- )
-                    ->leftJoin('refdepartment as rd', 'rd.department_id', '=', 'tb_reports.department_id')
-                    ->where('tb_reports.is_deleted', 0)
-                    ->where('tb_reports.is_received', 0)
-                    ->orderBy('report_id', 'desc')
+   {
+       $data['clients'] = User::select(
+            'b_users.*',
+            'rd.department_name',
+            'ru.user_type_id'
+
+)
+                    ->leftJoin('refdepartment as rd', 'rd.department_id', '=', 'b_users.department_id')
+                    ->leftJoin('refusertype as ru', 'ru.user_type_id', '=', 'b_users.user_type_id')
+                    
+                    ->where('b_users.is_deleted', 0)
+                    ->where('b_users.user_type_id', 1)
+                    ->orderBy('user_id', 'desc')
                     ->get();
 
-        // $data['products'] = Product::leftJoin('refunit', 'refunit.unit_id', 'refproduct.unit_id')
-        //             ->leftJoin('refcategory', 'refcategory.category_id', 'refproduct.category_id')
-        //             ->leftJoin('refsupplier', 'refsupplier.supplier_id', 'refproduct.supplier_id')
-        //             ->where('refproduct.is_deleted', 0)
-        //             ->orderBy('refproduct.product_id')
-        //             ->get();
 
-         $data['departments'] = Department::where('is_deleted', 0)->orderBy('department_id')->get();
+
 
         return $data;
-
-        // $report = Staff::where('is_deleted', 0)->orderBy('report_id', 'desc')->get();
-        // return Reference::collection($report);
-
     }
 
     /**

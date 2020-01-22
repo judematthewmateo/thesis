@@ -21,8 +21,12 @@ label {
 
 <template>
   <div class="animated fadeIn">
-    <b-nav extra-large class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">General Services</a>
+    <b-nav
+      extra-large
+      class="navbar navbar-expand-lg"
+      style="background-color: #28a754; color:White;"
+    >
+      <a class="navbar-brand" style="font-color:black;" href="#">General Services</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -32,7 +36,7 @@ label {
         aria-expanded="false"
         aria-label="Toggle navigation"
       >
-        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon" style="color:white"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
@@ -159,7 +163,7 @@ label {
                     >{{ row.detailsShowing ? 'Hide' : 'Show'}} Details</b-button>
                   </template>
 
-                  <template v-slot:row-details="row">
+                  <template v-slot:row-details>
                     <b-card>
                       <b-row class="mb-2">
                         <b-col lg="3">
@@ -170,7 +174,6 @@ label {
                             <b-col>
                               <b>
                                 Report No. :
-                                <!-- action slot  :to="{path: 'products/' + data.item.id } -->
                                 {{report_id}}
                               </b>
                             </b-col>
@@ -283,7 +286,7 @@ export default {
               sortable: true
             },
             {
-              key: "client_name",
+              key: "firstname",
               label: "Reported by",
               tdClass: "align-middle",
               sortable: true
@@ -315,7 +318,7 @@ export default {
           criteria: null
         }
       },
-      staff_id: null,
+      user_id: null,
       report_id: null,
       row: []
     };
@@ -340,6 +343,33 @@ export default {
           });
       }
     }
+    // GetReport(data) {
+    //   console.log("asdas");
+    //   var row = data.item;
+
+    //   this.report_id = row.report_id;
+    //   this.account_no = row.account_no;
+    //   this.client_name = row.account_no;
+
+    //   this.department_name = row.department_name;
+
+    //   this.$http
+    //     .get("api/report" + row.report_id, {
+    //       headers: {
+    //         Authorization: "Bearer " + localStorage.getItem("token")
+    //       }
+    //     })
+    //     .then(response => {
+    //       this.reports = response.data.data;
+    //       this.reports.forEach(s => {
+    //         s.is_selected = 0;
+    //       });
+    //     })
+    //     .catch(error => {
+    //       console.log(error);
+    //     });
+    //   this.row.toggleDetails;
+    // }
   },
   created() {
     this.$http

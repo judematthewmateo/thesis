@@ -9,12 +9,12 @@ export default {
     },
     {
       name: 'Staffs',
-      url: '/references/staffs',
+      url: '/references/stafflists',
       icon: 'icon-list'
     },
     {
       name: 'Clients',
-      url: '/references/clients',
+      url: '/references/clientlists',
       icon: 'icon-list'
     },
     {

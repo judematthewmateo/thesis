@@ -17,11 +17,12 @@ import RegisterStaff from "@/views/pages/RegisterStaff";
 import RegisterClient from "@/views/pages/RegisterClient";
 
 import staff from "@/views/staff";
+import client from "@/views/client";
 
 
 import departments from "@/views/references/Departments";
-import staffs from "@/views/references/Staffs";
-import clients from "@/views/references/Clients";
+import stafflists from "@/views/references/Stafflists";
+import clientlists from "@/views/references/Clientlists";
 
 
 import store from "../store";
@@ -62,15 +63,15 @@ const router = new Router({
 
             },
             {
-              path: "clients",
+              path: "clientlists",
               name: "Clients",
-              component: clients,
+              component: clientlists,
 
             },
             {
-              path: "staffs",
+              path: "stafflists",
               name: "Staffs",
-              component: staffs,
+              component: stafflists,
 
             },
           ]
@@ -91,6 +92,11 @@ const router = new Router({
       path: "/staff",
       name: "Staff",
       component: staff
+    },
+    {
+      path: "/client",
+      name: "Client",
+      component: client
     },
     {
       path: "/registerclient",

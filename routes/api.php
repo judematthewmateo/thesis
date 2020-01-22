@@ -32,17 +32,17 @@ Route::middleware('auth:api')->group(function () {
     Route::get('dashboard/index/{payment_type}', 'References\DashboardController@index');
     Route::get('dashboard/payment/{payment_type}/{is_string}', 'References\DashboardController@getPaymentLine');
 
-    Route::get('users', 'Utilities\UsersController@index');
-    //List single category
-    Route::get('user/{id}', 'Utilities\UsersController@show');
-    //Create new category
-    Route::post('user', 'Utilities\UsersController@create');
-    //Update category
-    Route::put('user/{id}', 'Utilities\UsersController@update');
-    //Delete category
-    Route::put('user/delete/{id}', 'Utilities\UsersController@delete');
-    //Check if category was used
-    Route::get('usercheck/{id}', 'Utilities\UsersController@checkIfUsed');
+    // Route::get('users', 'Utilities\UsersController@index');
+    
+    // Route::get('user/{id}', 'Utilities\UsersController@show');
+
+    // Route::post('user', 'Utilities\UsersController@create');
+  
+    // Route::put('user/{id}', 'Utilities\UsersController@update');
+    
+    // Route::put('user/delete/{id}', 'Utilities\UsersController@delete');
+  
+    // Route::get('usercheck/{id}', 'Utilities\UsersController@checkIfUsed');
 
     //List Departments
     Route::get('departments', 'References\DepartmentsController@index');
@@ -58,33 +58,20 @@ Route::middleware('auth:api')->group(function () {
     Route::get('departmentcheck/{id}', 'References\DepartmentsController@checkIfUsed');
     // END departments
 
-    Route::get('reports', 'Utilities\StaffsController@index');
-    Route::get('report/{id}', 'Utilities\StaffsController@show');
 
 
-    Route::get('staffs', 'References\StaffsController@index');
-    //List single category
-    Route::get('staff/{id}', 'References\StaffsController@show');
-    //Create new category
-    Route::post('staff', 'References\StaffsController@create');
-    //Update category
-    Route::put('staff/{id}', 'References\StaffsController@update');
-    //Delete category
-    Route::put('staff/delete/{id}', 'References\StaffsController@delete');
-    //Check if category was used
-    Route::get('staffcheck/{id}', 'References\StaffsController@checkIfUsed');
+    Route::get('reports', 'Utilities\ReportsController@index');
 
-    Route::get('clients', 'References\ClientsController@index');
-    //List single category
-    Route::get('client/{id}', 'References\ClientsController@show');
-    //Create new category
-    Route::post('client', 'References\ClientsController@create');
-    //Update category
-    Route::put('client/{id}', 'References\ClientsController@update');
-    //Delete category
-    Route::put('client/delete/{id}', 'References\ClientsController@delete');
-    //Check if category was used
-    Route::get('clientcheck/{id}', 'References\ClientsController@checkIfUsed');
+    // pag send ng report
+    Route::post('client', 'Utilities\ReportsController@create');
+    
+
+    Route::get('staffs', 'References\StafflistsController@index');
+    
+
+     Route::get('clients', 'References\ClientlistsController@index');
+  
+  
 
     
 });
