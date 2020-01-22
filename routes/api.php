@@ -61,6 +61,7 @@ Route::middleware('auth:api')->group(function () {
 
 
     Route::get('reports', 'Utilities\ReportsController@index');
+    // Route::get('reports/{id}', 'Utilities\ReportsController@index');
 
     // pag send ng report
     Route::post('client', 'Utilities\ReportsController@create');

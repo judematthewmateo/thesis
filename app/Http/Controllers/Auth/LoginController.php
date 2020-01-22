@@ -56,18 +56,4 @@ class LoginController extends Controller
             return redirect()->intended('/');
         }
     }
-    protected function authenticated(Request $request, User $user)
-    {
-    if ($user->admin()) {
-        // an admin
-        $redirect = '/';
-    } elseif ($user->manager()) {
-        // it's a staff
-        $redirect = '/staff';
-    } else {
-        // it's a client
-        $redirect = '/client';
-    }
-    return redirect($redirect);
-}
 }

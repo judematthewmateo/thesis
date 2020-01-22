@@ -159,11 +159,11 @@ a {
                     <b-button
                       variant="primary"
                       size="sm"
-                      @click="row.toggleDetails"
+                      @click="row.toggleDetails()"
                     >{{ row.detailsShowing ? 'Hide' : 'Show'}} Details</b-button>
                   </template>
 
-                  <template v-slot:row-details>
+                  <template v-slot:row-details="row">
                     <b-card>
                       <b-row class="mb-2">
                         <b-col lg="3">
@@ -174,7 +174,7 @@ a {
                             <b-col>
                               <b>
                                 Report No. :
-                                {{report_id}}
+                                {{row.item.report_id}}
                               </b>
                             </b-col>
                           </b-row>
@@ -187,7 +187,7 @@ a {
                           <!-- <b-col>{{ row.item.isActive }}</b-col> -->
                           <b-row class="mb-2">
                             <b-col>
-                              <b>Department :</b>
+                              <b>Department : {{row.item.department_name}}</b>
                             </b-col>
                           </b-row>
                           <!-- <b-col>{{ row.item.isActive }}</b-col> -->
@@ -198,7 +198,7 @@ a {
                         <b-col lg="3">
                           <b-row class="mb-2">
                             <b-col>
-                              <b>Problem issue :</b>
+                              <b>Problem issue : {{row.item.report_name}}</b>
                               <!-- <b-col>{{ row.item.isActive }}</b-col> -->
                             </b-col>
                           </b-row>
@@ -210,7 +210,10 @@ a {
                           <!-- <b-col>{{ row.item.isActive }}</b-col> -->
                           <b-row class="mb-2">
                             <b-col>
-                              <b-form-textarea placeholder="Remarks"></b-form-textarea>
+                              <b-form-textarea
+                                v-model="row.item.report_remarks"
+                                placeholder="Remarks"
+                              ></b-form-textarea>
                             </b-col>
                           </b-row>
                         </b-col>
@@ -438,31 +441,29 @@ export default {
       }
     }
     // GetReport(data) {
-    //   console.log("asdas");
     //   var row = data.item;
-
     //   this.report_id = row.report_id;
     //   this.account_no = row.account_no;
     //   this.client_name = row.client_name;
 
     //   this.department_name = row.department_name;
 
-    //   this.$http
-    //     .get("api/report" + row.report_id, {
-    //       headers: {
-    //         Authorization: "Bearer " + localStorage.getItem("token")
-    //       }
-    //     })
-    //     .then(response => {
-    //       this.reports = response.data.data;
-    //       this.reports.forEach(s => {
-    //         s.is_selected = 0;
-    //       });
-    //     })
-    //     .catch(error => {
-    //       console.log(error);
-    //     });
-    //   this.row.toggleDetails;
+    //   // this.$http
+    //   //   .get("api/report/" + row.report_id, {
+    //   //     headers: {
+    //   //       Authorization: "Bearer " + localStorage.getItem("token")
+    //   //     }
+    //   //   })
+    //   //   .then(response => {
+    //   //     this.reports = response.data.data;
+    //   //     this.reports.forEach(s => {
+    //   //       s.is_selected = 0;
+    //   //     });
+    //   //   })
+    //   //   .catch(error => {
+    //   //     console.log(error);
+    //   //   });
+    //   // this.row.toggleDetails;
     // }
   },
   created() {
