@@ -68,16 +68,16 @@ a {
         <b-row>
           <b-col sm="5">
             <div class="profile">
-              <h5>JUDE G. MATEO</h5>
+              <h5>{{$store.state.user.firstname}} {{$store.state.user.lastname}}</h5>
 
-              <label>Username :</label>
-              <a>Admin</a>
+              <label>Username : {{$store.state.user.username}}</label>
+
               <br />
               <label>Department :</label>
-              <a>IT Support</a>
+              <a>{{$store.state.user.department_name}}</a>
               <br />
               <label>User type :</label>
-              <a>Staff</a>
+              <a>Client</a>
             </div>
           </b-col>
 
@@ -198,19 +198,17 @@ a {
                         <b-col lg="3">
                           <b-row class="mb-2">
                             <b-col>
-                              <b>Problem issue : {{row.item.report_name}}</b>
+                              <b>Name of Report : {{row.item.report_name}}</b>
                               <!-- <b-col>{{ row.item.isActive }}</b-col> -->
                             </b-col>
                           </b-row>
-                          <b-row class="mb-2">
-                            <b-col>
-                              <b>What kind of Problem? :</b>
-                            </b-col>
-                          </b-row>
+
                           <!-- <b-col>{{ row.item.isActive }}</b-col> -->
                           <b-row class="mb-2">
                             <b-col>
+                              <b>Remarks :</b>
                               <b-form-textarea
+                                plaintext
                                 v-model="row.item.report_remarks"
                                 placeholder="Remarks"
                               ></b-form-textarea>
@@ -221,7 +219,8 @@ a {
                           <br />
                           <br />
                           <br />
-                          <b-button class="m-1" size="sm" variant="success">Rate the Staff</b-button>
+                          <b-button class="m-1" size="sm" variant="success">Update this Report</b-button>
+                          <b-button class="m-1" size="sm" variant="danger">Cancel this Report</b-button>
                         </b-col>
                       </b-row>
                     </b-card>
@@ -251,13 +250,13 @@ a {
         <b-form @keydown="resetFieldStates('client')" autocomplete="off">
           <!-- modal body -->
           <b-form-group>
-            <label>Name your Report</label>
+            <label>Name of Report</label>
             <b-form-input
               ref="report_name"
               id="report_name"
               v-model="forms.client.fields.report_name"
               type="text"
-              placeholder="Name your Report"
+              placeholder="Name of Report"
             ></b-form-input>
           </b-form-group>
           <b-form-group>

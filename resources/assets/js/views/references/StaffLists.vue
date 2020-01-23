@@ -1,4 +1,12 @@
-
+<style scoped>
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+</style>
 
 <template>
   <div>
@@ -24,12 +32,12 @@
             <b-row class="mb-2">
               <!-- row button and search input -->
               <b-col sm="4">
-                <!-- <b-button
+                <b-button
                   variant="primary"
                   @click="showModalEntry = true, entryMode='Add', clearFields('staff')"
                 >
-                  <i class="fa fa-plus-circle"></i> Create New Departments
-                </b-button>-->
+                  <i class="fa fa-plus-circle"></i> Create New Staff Account
+                </b-button>
               </b-col>
 
               <b-col sm="4">
@@ -103,10 +111,242 @@
       <!-- main row -->
     </div>
 
-    <div>
-      <!-- modal div -->
-    </div>
-    <!-- modal div -->
+    <div></div>
+    <b-modal
+      v-model="showModalEntry"
+      :noCloseOnEsc="true"
+      :noCloseOnBackdrop="true"
+      @shown="focusElement('id_number')"
+    >
+      <div slot="modal-title">
+        <!-- modal title -->
+        Creating New Staff Account
+      </div>
+
+      <b-col lg="12">
+        <!-- modal body -->
+        <b-form @keydown="resetFieldStates('staff')" autocomplete="off">
+          <b-row>
+            <b-col lg="6">
+              <b-form-group>
+                <label>
+                  <i
+                    class="icon-required fa fa-exclamation-circle"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Required Feild"
+                  ></i> Account Number
+                </label>
+                <div class="input-group">
+                  <span class="input-group-addon" placeholder="ID NO.">
+                    <i class="icon-user-follow"></i>
+                  </span>
+                  <b-form-input
+                    disabled
+                    class="form-control"
+                    placeholder="XXXX - OLFU - XXXX"
+                    hover
+                    title="Auto Generate"
+                  />
+                </div>
+              </b-form-group>
+
+              <b-form-group>
+                <label for="id_number">
+                  <i
+                    class="icon-required fa fa-exclamation-circle"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Required Feild"
+                  ></i> ID Number
+                </label>
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="fa fa-hashtag"></i>
+                  </span>
+
+                  <b-form-input
+                    ref="id_number"
+                    type="number"
+                    class="form-control"
+                    placeholder="ID NO."
+                    v-model="forms.staff.fields.id_number"
+                  />
+                </div>
+              </b-form-group>
+              <b-form-group>
+                <label>
+                  <i
+                    class="icon-required fa fa-exclamation-circle"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Required Feild"
+                  ></i> First Name
+                </label>
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="icon-user"></i>
+                  </span>
+                  <b-form-input
+                    type="text"
+                    class="form-control"
+                    placeholder="First Name"
+                    v-model="forms.staff.fields.firstname"
+                  />
+                </div>
+              </b-form-group>
+              <b-form-group>
+                <label>Middle Name</label>
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="icon-user"></i>
+                  </span>
+                  <b-form-input
+                    type="text"
+                    class="form-control"
+                    placeholder="Middle Name"
+                    v-model="forms.staff.fields.middlename"
+                  />
+                </div>
+              </b-form-group>
+              <label>
+                <i
+                  class="icon-required fa fa-exclamation-circle"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Required Feild"
+                ></i> Last Name
+              </label>
+              <b-form-group>
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="icon-user"></i>
+                  </span>
+                  <b-form-input
+                    type="text"
+                    class="form-control"
+                    placeholder="Last Name"
+                    v-model="forms.staff.fields.lastname"
+                  />
+                </div>
+              </b-form-group>
+            </b-col>
+
+            <b-col lg="6">
+              <b-form-group>
+                <label>Contact Number</label>
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="icon-user"></i>
+                  </span>
+                  <b-form-input
+                    type="number"
+                    class="form-control"
+                    placeholder="Contact Number"
+                    v-model="forms.staff.fields.contact_number"
+                  />
+                </div>
+              </b-form-group>
+
+              <b-form-group>
+                <label>
+                  <i
+                    class="icon-required fa fa-exclamation-circle"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Required Feild"
+                  ></i> Select Department
+                </label>
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="icon-home"></i>
+                  </span>
+
+                  <select2
+                    class="js-example-responsive"
+                    style="width: 80%"
+                    ref="department_id"
+                    :allowClear="false"
+                    :placeholder="'Select Department'"
+                    v-model="forms.staff.fields.department_id"
+                  >
+                    <option
+                      v-for="right in options.departments.items"
+                      :key="right.department_id"
+                      :value="right.department_id"
+                    >{{right.department_name}}</option>
+                  </select2>
+                </div>
+              </b-form-group>
+              <b-form-group>
+                <label>
+                  <i
+                    class="icon-required fa fa-exclamation-circle"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Required Feild"
+                  ></i> Username
+                </label>
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="icon-user"></i>
+                  </span>
+                  <b-form-input
+                    type="text"
+                    class="form-control"
+                    placeholder="Username"
+                    v-model="forms.staff.fields.username"
+                  />
+                </div>
+              </b-form-group>
+              <b-form-group>
+                <label>
+                  <i
+                    class="icon-required fa fa-exclamation-circle"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Required Feild"
+                  ></i> Password
+                </label>
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="icon-lock"></i>
+                  </span>
+                  <b-form-input
+                    type="password"
+                    class="form-control"
+                    placeholder="Password"
+                    v-model="forms.staff.fields.password"
+                  />
+                </div>
+              </b-form-group>
+            </b-col>
+          </b-row>
+        </b-form>
+      </b-col>
+      <div slot="modal-footer">
+        <!-- modal footer buttons -->
+        <b-button :disabled="forms.staff.isSaving" variant="primary" @click="onStaffEntry">
+          <icon v-if="forms.staff.isSaving" name="sync" spin></icon>
+          <i class="fa fa-check"></i>
+          Save
+        </b-button>
+        <b-button variant="secondary" @click="showModalEntry=false">Close</b-button>
+      </div>
+    </b-modal>
+    <b-modal v-model="showModalDelete" :noCloseOnEsc="true" :noCloseOnBackdrop="true">
+      <div slot="modal-title">Delete Account</div>
+
+      <b-col lg="12">Are you sure you want to Delete this Account?</b-col>
+      <div slot="modal-footer">
+        <b-button :disabled="forms.staff.isSaving" variant="primary" @click="onStaffDelete">
+          <icon v-if="forms.staff.isSaving" name="sync" spin></icon>
+          <i class="fa fa-check"></i>
+          OK
+        </b-button>
+        <b-button variant="secondary" @click="showModalDelete=false">Close</b-button>
+      </div>
+    </b-modal>
   </div>
   <!-- main container -->
 </template>
@@ -122,19 +362,29 @@ export default {
         staff: {
           isSaving: false,
           isDeleting: false,
-          fields: {}
+          fields: {
+            id_no: null,
+            firstname: null,
+            middlename: null,
+            lastname: null,
+            contact_number: null,
+            department_id: null,
+            username: null,
+            password: null,
+            user_type_id: 2
+          }
         }
       },
       tables: {
         staffs: {
           fields: [
-            {
-              key: "user_id",
-              label: "User ID",
-              thStyle: { width: "150px" },
-              tdClass: "align-middle",
-              sortable: true
-            },
+            // {
+            //   key: "user_id",
+            //   label: "User ID",
+            //   thStyle: { width: "150px" },
+            //   tdClass: "align-middle",
+            //   sortable: true
+            // },
             {
               key: "account_no",
               label: "Account Number",
@@ -175,6 +425,11 @@ export default {
           criteria: null
         }
       },
+      options: {
+        departments: {
+          items: []
+        }
+      },
       paginations: {
         staffs: {
           totalRows: 0,
@@ -183,11 +438,12 @@ export default {
         }
       },
       user_id: null,
+
       row: []
     };
   },
   methods: {
-    onDepartmentEntry() {
+    onStaffEntry() {
       if (this.entryMode == "Add") {
         //name of form
         //if from a modal?
@@ -201,7 +457,7 @@ export default {
         this.updateEntity("staff", "user_id", true, this.row);
       }
     },
-    onDepartmentDelete() {
+    onStaffDelete() {
       this.deleteEntity("staff", this.user_id, true, "staffs", "user_id");
     },
     async setDelete(data) {

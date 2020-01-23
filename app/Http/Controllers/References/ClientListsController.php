@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Validator; //validation
 use Auth;
 use App\Models\References\Department;
 use App\Usertype;
+use Illuminate\Support\Facades\Hash;
+use DB;
  
 class ClientListsController extends Controller
 {
@@ -31,13 +33,12 @@ class ClientListsController extends Controller
                     ->leftJoin('refusertype as ru', 'ru.user_type_id', '=', 'b_users.user_type_id')
                     ->where('b_users.is_deleted', 0)
                     ->where('b_users.user_type_id', 3)
-                    ->orderBy('user_id', 'desc')
+                    ->orderBy('user_id', 'asc')
                     ->get();
 
-        $data['departments'] = Department::where('is_deleted', 0)->orderBy('department_id')->get();
-        $data['usertypes'] = Usertype::where('is_deleted', 0)->orderBy('user_type_id')->get();
+        $data['departments'] = Department::where('is_deleted', 0)->where('user_type', 0)->orderBy('department_id')->get();
 
-
+     
         return $data;
     }
 
@@ -48,7 +49,36 @@ class ClientListsController extends Controller
      */
     public function create(Request $request)
     {
-       
+       Validator::make($request->all(),
+        [
+            'id_number' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'department_id' => 'required',
+            'username' => 'required',
+            'password' => 'required'
+        ]
+    )->validate();
+
+    $client = new User();
+    $client->account_no = DB::select("select CreateAccountNo() as account_no")[0]->account_no;
+    $client->id_number = $request->input('id_number');
+    $client->firstname = $request->input('firstname');
+    $client->middlename = $request->input('middlename');
+    $client->lastname = $request->input('lastname');
+    $client->contact_number = $request->input('contact_number');
+    $client->department_id = $request->input('department_id');
+    $client->username = $request->input('username');
+    $client->password = Hash::make($request->input('password'));
+    $client->created_datetime = Carbon::now();
+    $client->created_by = Auth::user()->user_id;
+
+    $client->save();
+
+    //return json based from the resource data
+    return ( new Reference( $client ))
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
@@ -70,7 +100,7 @@ class ClientListsController extends Controller
      */
     public function show($id)
     {
-        $client = Staff::findOrFail($id);
+        $client = User::findOrFail($id);
 
         return ( new Reference( $client ) )
             ->response()
@@ -100,26 +130,35 @@ class ClientListsController extends Controller
         $client = Staff::findOrFail($id);
         
         Validator::make($request->all(),
-            [
-                'client_name' => 'required'
-            ]
-        )->validate();
+        [
+            'id_number' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'department_id' => 'required',
+            'username' => 'required',
+            'password' => 'required'
+        ]
+    )->validate();
 
-        
-      
-        $client->client_name = $request->input('client_name');
-        $client->client_desc = $request->input('client_desc');
-        $client->sort_key = $request->input('sort_key');
-        $client->modified_datetime = Carbon::now();
-        $client->modified_by = Auth::user()->user_id;
+    $client = new User();
+    $client->account_no = DB::select("select CreateAccountNo() as account_no")[0]->account_no;
+    $client->id_number = $request->input('id_number');
+    $client->firstname = $request->input('firstname');
+    $client->middlename = $request->input('middlename');
+    $client->lastname = $request->input('lastname');
+    $client->contact_number = $request->input('contact_number');
+    $client->department_id = $request->input('department_id');
+    $client->username = $request->input('username');
+    $client->password = Hash::make($request->input('password'));
+    $client->created_datetime = Carbon::now();
+    $client->created_by = Auth::user()->user_id;
 
+    $client->save();
 
-        //update  based on the http json body that is sent
-        $client->save();
-
-        return ( new Reference( $client ) )
+    //return json based from the resource data
+    return ( new Reference( $client ))
             ->response()
-            ->setStatusCode(200);
+            ->setStatusCode(201);
     }
 
     /**

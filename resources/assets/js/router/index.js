@@ -60,18 +60,27 @@ const router = new Router({
               path: "departments",
               name: "Departments",
               component: departments,
+              meta: {
+                requiresAuth: true
+              }
 
             },
             {
               path: "clientlists",
               name: "Clients",
               component: clientlists,
+              meta: {
+                requiresAuth: true
+              }
 
             },
             {
               path: "stafflists",
               name: "Staffs",
               component: stafflists,
+              meta: {
+                requiresAuth: true
+              }
 
             },
           ]
@@ -91,12 +100,18 @@ const router = new Router({
     {
       path: "/staff",
       name: "Staff",
-      component: staff
+      component: staff,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/client",
       name: "Client",
-      component: client
+      component: client,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/registerclient",

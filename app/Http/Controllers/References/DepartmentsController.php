@@ -38,6 +38,7 @@ class DepartmentsController extends Controller
     )->validate();
 
     $department = new Department();
+    $department->user_type = $request->input('user_type');
     $department->department_code = $request->input('department_code');
     $department->department_name = $request->input('department_name');
     $department->department_desc = $request->input('department_desc');
@@ -108,7 +109,8 @@ class DepartmentsController extends Controller
             ]
         )->validate();
 
-        
+    
+        $department->user_type = $request->input('user_type');
         $department->department_code = $request->input('department_code');
         $department->department_name = $request->input('department_name');
         $department->department_desc = $request->input('department_desc');

@@ -24,15 +24,17 @@ class ReportsController extends Controller
         $data['reports'] = Report::select(
             'tb_reports.*',
             'bu.firstname' , 
+             'rd.department_name',
             'bu.account_no',
             'rs.status_name'
             
  )
-                    
+                    ->leftJoin('refdepartment as rd', 'rd.department_id', '=', 'tb_reports.department_id')
                     ->leftJoin('b_users as bu', 'bu.user_id', '=', 'tb_reports.user_id')
                     ->leftJoin('report_status as rs', 'rs.status_id', '=', 'tb_reports.status_id')
                     ->where('tb_reports.is_deleted', 0)
                     ->where('tb_reports.status_id', 0)
+                    
                     ->orderBy('report_id', 'asc')
                     ->get();
 

@@ -80,7 +80,7 @@ label {
               <a>Admin</a>
               <br />
               <label>Department :</label>
-              <a>IT Support</a>
+              <a>AV TECH</a>
               <br />
               <label>User type :</label>
               <a>Staff</a>
@@ -159,11 +159,11 @@ label {
                     <b-button
                       variant="primary"
                       size="sm"
-                      @click="row.toggleDetails"
+                      @click="row.toggleDetails()"
                     >{{ row.detailsShowing ? 'Hide' : 'Show'}} Details</b-button>
                   </template>
 
-                  <template v-slot:row-details>
+                  <template v-slot:row-details="row">
                     <b-card>
                       <b-row class="mb-2">
                         <b-col lg="3">
@@ -174,45 +174,44 @@ label {
                             <b-col>
                               <b>
                                 Report No. :
-                                {{report_id}}
+                                {{row.item.report_id}}
                               </b>
                             </b-col>
                           </b-row>
                           <!-- <b-col>{{ row.item.age }}</b-col> -->
                           <b-row class="mb-2">
                             <b-col>
-                              <b>Reported by :</b>
+                              <b>Report Accept by :</b>
                             </b-col>
                           </b-row>
                           <!-- <b-col>{{ row.item.isActive }}</b-col> -->
                           <b-row class="mb-2">
                             <b-col>
-                              <b>Department :</b>
+                              <b>Department : {{row.item.department_name}}</b>
                             </b-col>
                           </b-row>
                           <!-- <b-col>{{ row.item.isActive }}</b-col> -->
                           <b-row class="mb-2">
-                            <b-col>
-                              <b-form-textarea placeholder="Remarks"></b-form-textarea>
-                            </b-col>
+                            <b-col></b-col>
                           </b-row>
                         </b-col>
                         <b-col lg="3">
                           <b-row class="mb-2">
                             <b-col>
-                              <b>Kind of Problem :</b>
+                              <b>Name of Report : {{row.item.report_name}}</b>
                               <!-- <b-col>{{ row.item.isActive }}</b-col> -->
                             </b-col>
                           </b-row>
-                          <b-row class="mb-2">
-                            <b-col>
-                              <b>What kind of Problem? :</b>
-                            </b-col>
-                          </b-row>
+
                           <!-- <b-col>{{ row.item.isActive }}</b-col> -->
                           <b-row class="mb-2">
                             <b-col>
-                              <b>What staff you need to do? :</b>
+                              <b>Remarks :</b>
+                              <b-form-textarea
+                                plaintext
+                                v-model="row.item.report_remarks"
+                                placeholder="Remarks"
+                              ></b-form-textarea>
                             </b-col>
                           </b-row>
                         </b-col>
@@ -220,12 +219,12 @@ label {
                           <br />
                           <br />
                           <br />
-                          <b-button class="m-1" size="sm" variant="success">Accept this report</b-button>
+                          <b-button class="m-1" size="sm" variant="success">Accept this Report</b-button>
                           <b-button
                             class="m-1"
                             size="sm"
-                            variant="primary"
-                          >Request to the Administrator</b-button>
+                            variant="danger"
+                          >Request this Report to the Administrator</b-button>
                         </b-col>
                       </b-row>
                     </b-card>

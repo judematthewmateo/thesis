@@ -118,13 +118,23 @@
       >
         <div slot="modal-title">
           <!-- modal title -->
-          department Entry - {{entryMode}}
+          Department Entry - {{entryMode}}
         </div>
         <!-- modal title -->
 
         <b-col lg="12">
           <!-- modal body -->
           <b-form @keydown="resetFieldStates('department')" autocomplete="off">
+            <b-form-group style="text-align: center;">
+              <b-form-radio-group
+                v-model="forms.department.fields.user_type"
+                name="radio-sub-component"
+              >
+                <b-form-radio name="some-radios" value="1">Staff Department</b-form-radio>
+                <b-form-radio name="some-radios" value="0">Client Department</b-form-radio>
+              </b-form-radio-group>
+            </b-form-group>
+
             <b-form-group>
               <label for="department_code">
                 <i
@@ -238,6 +248,7 @@ export default {
             department_code: null,
             department_name: null,
             department_desc: null,
+            user_type: 1,
             sort_key: 0
           }
         }

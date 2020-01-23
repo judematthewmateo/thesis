@@ -32,9 +32,9 @@
 
           <div
             class="row"
-            style="background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.3);color: #f1f1f1;padding: 20px; width: 70%; "
+            style="background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.3);color: #f1f1f1;padding: 20px; width: 35%; "
           >
-            <div class="col-6">
+            <div class="col-12">
               <h1>Login</h1>
 
               <p>Sign In to your account</p>
@@ -72,7 +72,7 @@
               </b-form>
             </div>
 
-            <div class="col-6">
+            <!-- <div class="col-6">
               <div class="card-body text-center">
                 <h2>Sign up</h2>
                 <p>Create your account to enjoy the benefits of this system.</p>
@@ -82,10 +82,10 @@
             </div>
           </div>
           <div>
-            <!-- modal div -->
+           
             <b-modal v-model="UsertypeModal" :noCloseOnBackdrop="true">
               <div slot="modal-title" style="height:15px">
-                <!-- modal title -->
+               
                 <label class="titlelabel">Please choose your kind of User.</label>
                 <p class="titlelabelbot">
                   <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -96,13 +96,12 @@
                 <b-button size="lg" class="m-3" variant="primary" href="/#/registerstaff">Technician</b-button>
                 <b-button size="lg" class="m-3" variant="success" href="/#/registerclient">Client</b-button>
               </div>
-              <!-- modal footer buttons -->
+             
               <div slot="modal-footer">
-                <!-- modal footer buttons -->
+                
               </div>
-            </b-modal>
+            </b-modal>-->
           </div>
-          <!-- modal div -->
         </div>
       </div>
     </div>

@@ -32,17 +32,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('dashboard/index/{payment_type}', 'References\DashboardController@index');
     Route::get('dashboard/payment/{payment_type}/{is_string}', 'References\DashboardController@getPaymentLine');
 
-    // Route::get('users', 'Utilities\UsersController@index');
-    
-    // Route::get('user/{id}', 'Utilities\UsersController@show');
 
-    // Route::post('user', 'Utilities\UsersController@create');
-  
-    // Route::put('user/{id}', 'Utilities\UsersController@update');
-    
-    // Route::put('user/delete/{id}', 'Utilities\UsersController@delete');
-  
-    // Route::get('usercheck/{id}', 'Utilities\UsersController@checkIfUsed');
 
     //List Departments
     Route::get('departments', 'References\DepartmentsController@index');
@@ -67,12 +57,32 @@ Route::middleware('auth:api')->group(function () {
     Route::post('client', 'Utilities\ReportsController@create');
     
 
-    Route::get('staffs', 'References\StafflistsController@index');
-    
 
-     Route::get('clients', 'References\ClientlistsController@index');
   
+   Route::get('staffs', 'References\StafflistsController@index');
+
+    Route::get('staff/{id}', 'References\StafflistsController@show');
+
+    Route::post('staff', 'References\StafflistsController@create');
   
+    Route::put('staff/{id}', 'References\StafflistsController@update');
+    
+    Route::put('staff/delete/{id}', 'References\StafflistsController@delete');
+  
+    Route::get('staffcheck/{id}', 'References\StafflistsController@checkIfUsed');
+
+
+    Route::get('clients', 'References\ClientlistsController@index');
+
+    Route::get('client/{id}', 'References\ClientlistsController@show');
+
+    Route::post('client', 'References\ClientlistsController@create');
+
+    Route::put('client/{id}', 'References\ClientlistsController@update');
+    
+    Route::put('client/delete/{id}', 'References\ClientlistsController@delete');
+  
+    Route::get('clientcheck/{id}', 'References\ClientlistsController@checkIfUsed');
 
     
 });
