@@ -4,28 +4,28 @@
       <div class="col-sm-6 col-lg-3">
         <b-card class="bg-primary" :no-block="true">
           <div class="card-body pb-0">
-            <h4 class="mb-0">9.823</h4>
-            <p>Members online</p>
+            <h4 class="mb-0">{{tables.dashboards.items.length}}</h4>
+            <p>All Report(s)</p>
           </div>
           <card-line1-chart-example class="chart-wrapper px-3" style="height:70px;" height="70" />
         </b-card>
       </div>
       <!--/.col-->
       <div class="col-sm-6 col-lg-3">
-        <b-card class="bg-info" :no-block="true">
+        <b-card class="bg-success" :no-block="true">
           <div class="card-body pb-0">
-            <h4 class="mb-0">9.823</h4>
-            <p>Members online</p>
+            <h4 class="mb-0">{{tables.dashboards.items.filter(i => i.status_id == 2).length}}</h4>
+            <p>Done Report(s)</p>
           </div>
-          <card-line2-chart-example class="chart-wrapper px-3" style="height:70px;" height="70" />
+          <card-bar-chart-example class="chart-wrapper px-3" style="height:70px;" height="70" />
         </b-card>
       </div>
       <!--/.col-->
       <div class="col-sm-6 col-lg-3">
         <b-card class="bg-warning" :no-block="true">
           <div class="card-body pb-0">
-            <h4 class="mb-0">9.823</h4>
-            <p>Members online</p>
+            <h4 class="mb-0">{{tables.dashboards.items.filter(i => i.status_id == 0).length}}</h4>
+            <p>Pending Report(s)</p>
           </div>
           <card-line3-chart-example class="chart-wrapper" style="height:70px;" height="70" />
         </b-card>
@@ -34,68 +34,59 @@
       <div class="col-sm-6 col-lg-3">
         <b-card class="bg-danger" :no-block="true">
           <div class="card-body pb-0">
-            <h4 class="mb-0">9.823</h4>
-            <p>Members online</p>
+            <h4 class="mb-0">{{accounts}}</h4>
+            <p>Account(s)</p>
           </div>
           <card-bar-chart-example class="chart-wrapper px-3" style="height:70px;" height="70" />
         </b-card>
       </div>
+
       <!--/.col-->
     </div>
     <!--/.row-->
+    <b-card class="m-0">
+      <h5 slot="header">
+        <!-- table header -->
+        <span class="text-primary">
+          <i class="fa fa-bars"></i>
+          Report Lists
+          <small class="font-italic">List of all reports .</small>
+        </span>
+      </h5>
+      <b-row class="mb-2">
+        <!-- row button and search input -->
+        <b-col sm="4">
+          <label>Client Department</label>
+          <select2 ref="department_id" :allowClear="false" :placeholder="'Select Department'">
+            <option
+              v-for="right in options.departments.items"
+              :key="right.department_id"
+              :value="right.department_id"
+            >{{right.department_name}}</option>
+          </select2>
+        </b-col>
 
-    <b-card>
-      <div class="row">
-        <div class="col-sm-5">
-          <h4 class="card-title mb-0">Traffic</h4>
-          <div class="small text-muted">November 2016</div>
-        </div>
-        <div class="col-sm-7 hidden-sm-down">
-          <b-button type="button" variant="primary" class="float-right">
-            <i class="icon-cloud-download"></i>
-          </b-button>
-          <b-button-toolbar class="float-right" aria-label="Toolbar with button groups">
-            <b-button-group class="mr-3" aria-label="First group">
-              <b-button variant="outline-secondary">Day</b-button>
-              <b-button variant="outline-secondary" :active="true">Month</b-button>
-              <b-button variant="outline-secondary">Year</b-button>
-            </b-button-group>
-          </b-button-toolbar>
-        </div>
-      </div>
-      <main-chart-example class="chart-wrapper" style="height:300px;margin-top:40px;" height="300"></main-chart-example>
-      <div slot="footer">
-        <ul>
-          <li>
-            <div class="text-muted">Visits</div>
-            <strong>29.703 Users (40%)</strong>
-            <b-progress class="progress-xs mt-2" :precision="1" variant="success" :value="40"></b-progress>
-          </li>
-          <li class="hidden-sm-down">
-            <div class="text-muted">Unique</div>
-            <strong>24.093 Users (20%)</strong>
-            <b-progress class="progress-xs mt-2" :precision="1" variant="info" :value="20"></b-progress>
-          </li>
-          <li>
-            <div class="text-muted">Pageviews</div>
-            <strong>78.706 Views (60%)</strong>
-            <b-progress class="progress-xs mt-2" :precision="1" variant="warning" :value="60"></b-progress>
-          </li>
-          <li class="hidden-sm-down">
-            <div class="text-muted">New Users</div>
-            <strong>22.123 Users (80%)</strong>
-            <b-progress class="progress-xs mt-2" :precision="1" variant="danger" :value="80"></b-progress>
-          </li>
-          <li class="hidden-sm-down">
-            <div class="text-muted">Bounce Rate</div>
-            <strong>40.15%</strong>
-            <b-progress class="progress-xs mt-2" :precision="1" :value="40"></b-progress>
-          </li>
-        </ul>
-      </div>
+        <b-col sm="4">
+          <span></span>
+        </b-col>
+
+        <b-col sm="4">
+          <label></label>
+          <b-form-input type="text" placeholder="Search"></b-form-input>
+        </b-col>
+      </b-row>
+      <b-table
+        responsive
+        striped
+        hover
+        small
+        bordered
+        show-empty
+        :fields="tables.dashboards.fields"
+        :items.sync="tables.dashboards.items"
+        :filter="filters.dashboards.criteria"
+      ></b-table>
     </b-card>
-
-    </div>
     <!--/.row-->
   </div>
 </template>
@@ -122,95 +113,73 @@ export default {
   },
   data: function() {
     return {
-      tableItems: [
-        {
-          avatar: { url: "static/img/avatars/1.jpg", status: "success" },
-          user: {
-            name: "Yiorgos Avraamu",
-            new: true,
-            registered: "Jan 1, 2015"
-          },
-          country: { name: "USA", flag: "static/img/flags/USA.png" },
-          usage: { value: 50, period: "Jun 11, 2015 - Jul 10, 2015" },
-          payment: { name: "Mastercard", icon: "fa fa-cc-mastercard" },
-          activity: "10 sec ago"
-        },
-        {
-          avatar: { url: "static/img/avatars/2.jpg", status: "danger" },
-          user: {
-            name: "Avram Tarasios",
-            new: false,
-            registered: "Jan 1, 2015"
-          },
-          country: { name: "Brazil", flag: "static/img/flags/Brazil.png" },
-          usage: { value: 22, period: "Jun 11, 2015 - Jul 10, 2015" },
-          payment: { name: "Visa", icon: "fa fa-cc-visa" },
-          activity: "5 minutes ago"
-        },
-        {
-          avatar: { url: "static/img/avatars/3.jpg", status: "warning" },
-          user: { name: "Quintin Ed", new: true, registered: "Jan 1, 2015" },
-          country: { name: "India", flag: "static/img/flags/India.png" },
-          usage: { value: 74, period: "Jun 11, 2015 - Jul 10, 2015" },
-          payment: { name: "Stripe", icon: "fa fa-cc-stripe" },
-          activity: "1 hour ago"
-        },
-        {
-          avatar: { url: "static/img/avatars/4.jpg", status: "" },
-          user: { name: "Enéas Kwadwo", new: true, registered: "Jan 1, 2015" },
-          country: { name: "France", flag: "static/img/flags/France.png" },
-          usage: { value: 98, period: "Jun 11, 2015 - Jul 10, 2015" },
-          payment: { name: "PayPal", icon: "fa fa-paypal" },
-          activity: "Last month"
-        },
-        {
-          avatar: { url: "static/img/avatars/5.jpg", status: "success" },
-          user: {
-            name: "Agapetus Tadeáš",
-            new: true,
-            registered: "Jan 1, 2015"
-          },
-          country: { name: "Spain", flag: "static/img/flags/Spain.png" },
-          usage: { value: 22, period: "Jun 11, 2015 - Jul 10, 2015" },
-          payment: { name: "Google Wallet", icon: "fa fa-google-wallet" },
-          activity: "Last week"
-        },
-        {
-          avatar: { url: "static/img/avatars/6.jpg", status: "danger" },
-          user: {
-            name: "Friderik Dávid",
-            new: true,
-            registered: "Jan 1, 2015"
-          },
-          country: { name: "Poland", flag: "static/img/flags/Poland.png" },
-          usage: { value: 43, period: "Jun 11, 2015 - Jul 10, 2015" },
-          payment: { name: "Amex", icon: "fa fa-cc-amex" },
-          activity: "Last week"
+      forms: {
+        dashboard: {}
+      },
+      tables: {
+        dashboards: {
+          fields: [
+            {
+              key: "report_id",
+              label: "Report No.",
+              thStyle: { width: "80px" },
+              tdClass: "align-middle",
+              sortable: true
+            },
+            {
+              key: "account_no",
+              label: "Account Number",
+              thStyle: { width: "150px" },
+              tdClass: "align-middle"
+            },
+            {
+              key: "firstname",
+              label: "Send by",
+              tdClass: "align-middle"
+            },
+            {
+              key: "department_name",
+              label: "From Department",
+              tdClass: "align-middle"
+            },
+            {
+              key: "send_datetime",
+              label: "Send date/time",
+              tdClass: "align-middle",
+              sortable: true,
+              formatter: value => {
+                return this.moment(value, "MMMM DD, YYYY hh:mm A");
+              }
+            },
+            {
+              key: "status_name",
+              label: "Status",
+              tdClass: "align-middle",
+              sortable: true
+            },
+
+            {
+              key: "situation_name",
+              label: "Situation",
+
+              tdClass: "text-center"
+            }
+          ],
+          items: []
         }
-      ],
-      tableFields: {
-        avatar: {
-          label: '<i class="icon-people"></i>',
-          class: "text-center"
-        },
-        user: {
-          label: "User"
-        },
-        country: {
-          label: "Country",
-          class: "text-center"
-        },
-        usage: {
-          label: "Usage"
-        },
-        payment: {
-          label: "Payment method",
-          class: "text-center"
-        },
-        activity: {
-          label: "Activity"
+      },
+
+      filters: {
+        dashboards: {
+          criteria: null
         }
-      }
+      },
+      options: {
+        departments: {
+          items: []
+        }
+      },
+      accounts: 0
     };
   },
   methods: {
@@ -227,6 +196,23 @@ export default {
       }
       return $variant;
     }
+  },
+  created() {
+    this.$http
+      .get("api/dashboards", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      })
+      .then(response => {
+        this.tables.dashboards.items = response.data.dashboards;
+        this.options.departments.items = response.data.departments;
+        this.accounts = response.data.accounts;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    // this.fillTableList("dashboards");
   }
 };
 </script>

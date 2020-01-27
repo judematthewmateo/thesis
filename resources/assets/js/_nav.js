@@ -22,5 +22,10 @@ export default {
       url: '/references/departments',
       icon: 'icon-list'
     },
+    {
+      name: 'Parts',
+      url: '/references/parts',
+      icon: 'icon-list'
+    },
   ],
 }

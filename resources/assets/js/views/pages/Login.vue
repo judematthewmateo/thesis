@@ -150,9 +150,7 @@ export default {
               if (response.data.user.user_type_id == 2) {
                 this.$router.push({ name: "Staff" });
                 return;
-              }
-
-              this.$router.push({ name: "Dashboard" });
+              } else this.$router.push({ name: "Dashboard" });
             }.bind(this),
             1000
           );

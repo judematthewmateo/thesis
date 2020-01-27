@@ -33,7 +33,7 @@ input[type="number"]::-webkit-outer-spin-button {
               <b-col sm="4">
                 <b-button
                   variant="primary"
-                  @click="showModalEntry = true, entryMode='Add', clearFields('client')"
+                  @click="showModalEntry = true, entryMode='Add', clearFields('clientlist')"
                 >
                   <i class="fa fa-plus-circle"></i> Create New Client Account
                 </b-button>
@@ -44,7 +44,11 @@ input[type="number"]::-webkit-outer-spin-button {
               </b-col>
 
               <b-col sm="4">
-                <b-form-input v-model="filters.clients.criteria" type="text" placeholder="Search"></b-form-input>
+                <b-form-input
+                  v-model="filters.clientlists.criteria"
+                  type="text"
+                  placeholder="Search"
+                ></b-form-input>
               </b-col>
             </b-row>
             <!-- row button and search input -->
@@ -59,11 +63,11 @@ input[type="number"]::-webkit-outer-spin-button {
                   small
                   bordered
                   show-empty
-                  :filter="filters.clients.criteria"
-                  :fields="tables.clients.fields"
-                  :items.sync="tables.clients.items"
-                  :current-page="paginations.clients.currentPage"
-                  :per-page="paginations.clients.perPage"
+                  :filter="filters.clientlists.criteria"
+                  :fields="tables.clientlists.fields"
+                  :items.sync="tables.clientlists.items"
+                  :current-page="paginations.clientlists.currentPage"
+                  :per-page="paginations.clientlists.perPage"
                 >
                   <!-- table -->
 
@@ -75,11 +79,11 @@ input[type="number"]::-webkit-outer-spin-button {
 
                     <b-btn
                       :size="'sm'"
-                      :disabled="forms.client.isDeleting"
+                      :disabled="forms.clientlist.isDeleting"
                       variant="danger"
                       @click="setDelete(data)"
                     >
-                      <icon v-if="forms.client.isDeleting" name="sync" spin></icon>
+                      <icon v-if="forms.clientlist.isDeleting" name="sync" spin></icon>
                       <i v-else class="fa fa-trash"></i>
                     </b-btn>
                   </template>
@@ -95,9 +99,9 @@ input[type="number"]::-webkit-outer-spin-button {
                 <b-pagination
                   size="sm"
                   align="center"
-                  :total-rows="paginations.clients.totalRows"
-                  :per-page="paginations.clients.perPage"
-                  v-model="paginations.clients.currentPage"
+                  :total-rows="paginations.clientlists.totalRows"
+                  :per-page="paginations.clientlists.perPage"
+                  v-model="paginations.clientlists.currentPage"
                   class="my-0"
                 />
               </b-col>
@@ -120,7 +124,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
       <b-col lg="12">
         <!-- modal body -->
-        <b-form @keydown="resetFieldStates('client')" autocomplete="off">
+        <b-form @keydown="resetFieldStates('clientlist')" autocomplete="off">
           <b-row>
             <b-col lg="6">
               <b-form-group>
@@ -165,7 +169,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     type="number"
                     class="form-control"
                     placeholder="ID NO."
-                    v-model="forms.client.fields.id_number"
+                    v-model="forms.clientlist.fields.id_number"
                   />
                 </div>
               </b-form-group>
@@ -186,7 +190,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     type="text"
                     class="form-control"
                     placeholder="First Name"
-                    v-model="forms.client.fields.firstname"
+                    v-model="forms.clientlist.fields.firstname"
                   />
                 </div>
               </b-form-group>
@@ -200,7 +204,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     type="text"
                     class="form-control"
                     placeholder="Middle Name"
-                    v-model="forms.client.fields.middlename"
+                    v-model="forms.clientlist.fields.middlename"
                   />
                 </div>
               </b-form-group>
@@ -221,7 +225,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     type="text"
                     class="form-control"
                     placeholder="Last Name"
-                    v-model="forms.client.fields.lastname"
+                    v-model="forms.clientlist.fields.lastname"
                   />
                 </div>
               </b-form-group>
@@ -238,7 +242,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     type="number"
                     class="form-control"
                     placeholder="Contact Number"
-                    v-model="forms.client.fields.contact_number"
+                    v-model="forms.clientlist.fields.contact_number"
                   />
                 </div>
               </b-form-group>
@@ -263,7 +267,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     ref="department_id"
                     :allowClear="false"
                     :placeholder="'Select Department'"
-                    v-model="forms.client.fields.department_id"
+                    v-model="forms.clientlist.fields.department_id"
                   >
                     <option
                       v-for="right in options.departments.items"
@@ -290,7 +294,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     type="text"
                     class="form-control"
                     placeholder="Username"
-                    v-model="forms.client.fields.username"
+                    v-model="forms.clientlist.fields.username"
                   />
                 </div>
               </b-form-group>
@@ -311,7 +315,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     type="password"
                     class="form-control"
                     placeholder="Password"
-                    v-model="forms.client.fields.password"
+                    v-model="forms.clientlist.fields.password"
                   />
                 </div>
               </b-form-group>
@@ -321,8 +325,8 @@ input[type="number"]::-webkit-outer-spin-button {
       </b-col>
       <div slot="modal-footer">
         <!-- modal footer buttons -->
-        <b-button :disabled="forms.client.isSaving" variant="primary" @click="onClientEntry">
-          <icon v-if="forms.client.isSaving" name="sync" spin></icon>
+        <b-button :disabled="forms.clientlist.isSaving" variant="primary" @click="onClientEntry">
+          <icon v-if="forms.clientlist.isSaving" name="sync" spin></icon>
           <i class="fa fa-check"></i>
           Save
         </b-button>
@@ -334,8 +338,8 @@ input[type="number"]::-webkit-outer-spin-button {
 
       <b-col lg="12">Are you sure you want to Delete this Account?</b-col>
       <div slot="modal-footer">
-        <b-button :disabled="forms.client.isSaving" variant="primary" @click="onClientDelete">
-          <icon v-if="forms.client.isSaving" name="sync" spin></icon>
+        <b-button :disabled="forms.clientlist.isSaving" variant="primary" @click="onClientDelete">
+          <icon v-if="forms.clientlist.isSaving" name="sync" spin></icon>
           <i class="fa fa-check"></i>
           OK
         </b-button>
@@ -347,21 +351,21 @@ input[type="number"]::-webkit-outer-spin-button {
 </template>
 <script>
 export default {
-  name: "clients",
+  name: "clientlists",
   data() {
     return {
       entryMode: "Add",
       showModalEntry: false, //if true show modal
       showModalDelete: false,
       forms: {
-        client: {
+        clientlist: {
           isSaving: false,
           isDeleting: false,
           fields: {}
         }
       },
       tables: {
-        clients: {
+        clientlists: {
           fields: [
             {
               key: "user_id",
@@ -406,7 +410,7 @@ export default {
         }
       },
       filters: {
-        clients: {
+        clientlists: {
           criteria: null
         }
       },
@@ -416,7 +420,7 @@ export default {
         }
       },
       paginations: {
-        clients: {
+        clientlists: {
           totalRows: 0,
           currentPage: 1,
           perPage: 10
@@ -432,17 +436,23 @@ export default {
         //name of form
         //if from a modal?
         //name of table to be inserted
-        this.createEntity("client", true, "clients");
+        this.createEntity("clientlist", true, "clientlists");
       } else {
         //name of form
         //name of primary key
         //if from a modal?
         //row to be edited
-        this.updateEntity("client", "user_id", true, this.row);
+        this.updateEntity("clientlist", "user_id", true, this.row);
       }
     },
     onClientDelete() {
-      this.deleteEntity("client", this.user_id, true, "clients", "user_id");
+      this.deleteEntity(
+        "clientlist",
+        this.user_id,
+        true,
+        "clientlists",
+        "user_id"
+      );
     },
     async setDelete(data) {
       this.user_id = data.item.user_id;
@@ -450,8 +460,8 @@ export default {
     },
     setUpdate(data) {
       this.row = data.item;
-      this.resetFieldStates("client");
-      this.fillEntityForm("client", data.item.user_id);
+      this.resetFieldStates("clientlist");
+      this.fillEntityForm("clientlist", data.item.user_id);
       this.showModalEntry = true;
       this.entryMode = "Edit";
     }
@@ -462,14 +472,15 @@ export default {
 
     this.$http
 
-      .get("api/clients", {
+      .get("api/clientlists", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")
         }
       })
       .then(response => {
-        this.tables.clients.items = response.data.clients;
-        this.paginations.clients.totalRows = response.data.clients.length;
+        this.tables.clientlists.items = response.data.clientlists;
+        this.paginations.clientlists.totalRows =
+          response.data.clientlists.length;
         this.options.departments.items = response.data.departments;
       })
       .catch(error => {

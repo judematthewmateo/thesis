@@ -13,13 +13,13 @@ import Page404 from "@/views/pages/Page404";
 import Page500 from "@/views/pages/Page500";
 import Login from "@/views/pages/Login";
 import Logout from "@/views/pages/Logout";
-import RegisterStaff from "@/views/pages/RegisterStaff";
-import RegisterClient from "@/views/pages/RegisterClient";
+// import RegisterStaff from "@/views/pages/RegisterStaff";
+// import RegisterClient from "@/views/pages/RegisterClient";
 
 import staff from "@/views/staff";
 import client from "@/views/client";
 
-
+import parts from "@/views/references/Parts";
 import departments from "@/views/references/Departments";
 import stafflists from "@/views/references/Stafflists";
 import clientlists from "@/views/references/Clientlists";
@@ -57,6 +57,8 @@ const router = new Router({
           },
 
           children: [{
+
+
               path: "departments",
               name: "Departments",
               component: departments,
@@ -83,6 +85,15 @@ const router = new Router({
               }
 
             },
+            {
+              path: "parts",
+              name: "Parts",
+              component: parts,
+              meta: {
+                requiresAuth: true
+              },
+            }
+
           ]
         },
 
@@ -92,11 +103,12 @@ const router = new Router({
 
 
 
-    {
-      path: "/registerstaff",
-      name: "Register Staff",
-      component: RegisterStaff
-    },
+    // {
+    //   path: "/registerstaff",
+    //   name: "Register Staff",
+    //   component: RegisterStaff
+
+    // },
     {
       path: "/staff",
       name: "Staff",
@@ -113,11 +125,12 @@ const router = new Router({
         requiresAuth: true
       }
     },
-    {
-      path: "/registerclient",
-      name: "Register Client",
-      component: RegisterClient
-    },
+
+    // {
+    //   path: "/registerclient",
+    //   name: "Register Client",
+    //   component: RegisterClient
+    // },
     {
       path: "/login",
       name: "Login",

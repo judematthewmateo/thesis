@@ -1,6 +1,4 @@
 
-</style>
-
 <template>
   <div>
     <notifications group="notification" />
@@ -332,15 +330,6 @@ export default {
       );
     },
     async setDelete(data) {
-      // if(await this.checkIfUsed('department', data.item.department_id) == true){
-      //     this.$notify({
-      //         type: 'error',
-      //         group: 'notification',
-      //         title: 'Error!',
-      //         text: "Unable to delete, this record is being used by other transactions."
-      //     })
-      //     return
-      // }
       this.department_id = data.item.department_id;
       this.showModalDelete = true;
     },

@@ -21,11 +21,8 @@ label {
 
 <template>
   <div class="animated fadeIn">
-    <b-nav
-      extra-large
-      class="navbar navbar-expand-lg"
-      style="background-color: #28a754; color:White;"
-    >
+    <notifications group="notification" />
+    <b-nav extra-large class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" style="font-color:black;" href="#">General Services</a>
       <button
         class="navbar-toggler"
@@ -46,9 +43,7 @@ label {
           <li class="nav-item">
             <a class="nav-link" href="#">History log</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Setting</a>
-          </li>
+
           <li class="nav-item">
             <a class="nav-link" @click="logOutStaff()">Logout</a>
           </li>
@@ -56,31 +51,18 @@ label {
       </div>
     </b-nav>
 
-    <!-- main row -->
-
-    <!-- <div class="mt-10">
-          <label>Name :</label>
-          <a>JUDE G. MATEO</a>
-          <br />
-          <label>Username :</label>
-          <a>Admin</a>
-          <br />
-          <label>Department :</label>
-          <a>IT Support</a>
-    </div>-->
-
     <div style="overflow: hidden;">
       <div style="background-color: lightgray;">
         <b-row>
           <b-col sm="5">
             <div class="profile">
-              <h5>JUDE G. MATEO</h5>
+              <h5>{{$store.state.user.firstname}} {{$store.state.user.lastname}}</h5>
 
               <label>Username :</label>
-              <a>Admin</a>
+              <a>{{$store.state.user.username}}</a>
               <br />
               <label>Department :</label>
-              <a>AV TECH</a>
+              <a>{{$store.state.user.department_name}}</a>
               <br />
               <label>User type :</label>
               <a>Staff</a>
@@ -92,9 +74,9 @@ label {
               class="mt-2"
               thumbnail
               fluid
-              src="images/login/ccs.png"
+              src="images/login/login.jpg"
               rounded="circle"
-              style="height:190; 
+              style="height:150px; 
               weight:500px; 
               background-size: cover; 
               background-attachment: fixed;
@@ -112,8 +94,8 @@ label {
 
       <b-row>
         <!-- main row -->
-        <b-col sm="12">
-          <b-card class="ml-3 mr-3">
+        <b-col lg="6">
+          <b-card class="ml-3 mr-0">
             <b-row class="mb-2">
               <!-- row button and search input -->
               <b-col sm="4">
@@ -122,7 +104,7 @@ label {
                   <!-- table header -->
                   <span class="text-primary">
                     <i class="fa fa-bars"></i>
-                    Queue Report(s)
+                    Pending Report(s)
                   </span>
                 </h5>
               </b-col>
@@ -149,7 +131,7 @@ label {
                   bordered
                   show-empty
                   :fields="tables.reports.fields"
-                  :items.sync="tables.reports.items"
+                  :items="filterReports(0)"
                   :filter="filters.reports.criteria"
                 >
                   <!-- table -->
@@ -166,66 +148,68 @@ label {
                   <template v-slot:row-details="row">
                     <b-card>
                       <b-row class="mb-2">
-                        <b-col lg="3">
-                          <span></span>
-                        </b-col>
-                        <b-col lg="3">
+                        <b-col lg="8">
                           <b-row class="mb-2">
                             <b-col>
-                              <b>
-                                Report No. :
-                                {{row.item.report_id}}
-                              </b>
+                              <b>Report No. :</b>
+                              <label>&emsp;{{row.item.report_id}}</label>
                             </b-col>
                           </b-row>
                           <!-- <b-col>{{ row.item.age }}</b-col> -->
                           <b-row class="mb-2">
                             <b-col>
-                              <b>Report Accept by :</b>
-                            </b-col>
-                          </b-row>
-                          <!-- <b-col>{{ row.item.isActive }}</b-col> -->
-                          <b-row class="mb-2">
-                            <b-col>
-                              <b>Department : {{row.item.department_name}}</b>
-                            </b-col>
-                          </b-row>
-                          <!-- <b-col>{{ row.item.isActive }}</b-col> -->
-                          <b-row class="mb-2">
-                            <b-col></b-col>
-                          </b-row>
-                        </b-col>
-                        <b-col lg="3">
-                          <b-row class="mb-2">
-                            <b-col>
                               <b>Name of Report : {{row.item.report_name}}</b>
-                              <!-- <b-col>{{ row.item.isActive }}</b-col> -->
+                            </b-col>
+                          </b-row>
+                          <!-- <b-col>{{ row.item.isActive }}</b-col> -->
+                          <b-row class="mb-2">
+                            <b-col>
+                              <b>Department/Staff needed :</b>
+                            </b-col>
+                          </b-row>
+                          <!-- </b-col>
+                          <b-col lg="6">-->
+                          <b-row class="mb-2">
+                            <b-col>
+                              <b>Type of Problem :</b>
                             </b-col>
                           </b-row>
 
-                          <!-- <b-col>{{ row.item.isActive }}</b-col> -->
                           <b-row class="mb-2">
                             <b-col>
                               <b>Remarks :</b>
                               <b-form-textarea
-                                plaintext
+                                style="background-color: white; width: 60%;"
+                                disabled
                                 v-model="row.item.report_remarks"
                                 placeholder="Remarks"
                               ></b-form-textarea>
                             </b-col>
                           </b-row>
                         </b-col>
-                        <b-col lg="3">
+                        <b-col lg="4">
+                          <h3>{{row.item.situation_id}}</h3>
                           <br />
                           <br />
                           <br />
-                          <b-button class="m-1" size="sm" variant="success">Accept this Report</b-button>
+                          <br />
+                          <br />
+                          <br />
+                          <br />
+
                           <b-button
+                            style="float:right;"
+                            size="sm"
+                            variant="success"
+                            @click="AcceptReport(row)"
+                          >Accept this Report</b-button>
+                        </b-col>
+                        <!-- <b-button
                             class="m-1"
                             size="sm"
                             variant="danger"
-                          >Request this Report to the Administrator</b-button>
-                        </b-col>
+                        >Request this Report to the Administrator</b-button>-->
+                        <!-- </b-col> -->
                       </b-row>
                     </b-card>
                   </template>
@@ -235,15 +219,149 @@ label {
             </b-row>
           </b-card>
         </b-col>
+
+        <b-col lg="6">
+          <b-card class="mr-3 ml-0">
+            <b-row class="mb-2">
+              <!-- row button and search input -->
+              <b-col sm="4">
+                <!-- main card -->
+                <h5 slot="header">
+                  <!-- table header -->
+                  <span class="text-primary">
+                    <i class="fa fa-bars"></i>
+                    Accepted Report(s)
+                  </span>
+                </h5>
+              </b-col>
+
+              <b-col sm="4">
+                <span></span>
+              </b-col>
+
+              <b-col sm="4">
+                <b-form-input type="text" placeholder="Search"></b-form-input>
+              </b-col>
+            </b-row>
+            <b-table
+              responsive
+              striped
+              hover
+              small
+              bordered
+              show-empty
+              :fields="tables.reports.fields"
+              :items="filterReports(1)"
+              :filter="filters.reports.criteria"
+            >
+              <template v-slot:cell(show_details)="row">
+                <!-- action slot  :to="{path: 'products/' + data.item.id } -->
+                <b-button
+                  variant="primary"
+                  size="sm"
+                  @click="row.toggleDetails()"
+                >{{ row.detailsShowing ? 'Hide' : 'Show'}} Details</b-button>
+              </template>
+
+              <template v-slot:row-details="row">
+                <b-card>
+                  <b-row class="mb-2">
+                    <b-col lg="8">
+                      <b-row class="mb-2">
+                        <b-col>
+                          <b>Report No. :</b>
+                          <label>&emsp;{{row.item.report_id}}</label>
+                        </b-col>
+                      </b-row>
+                      <!-- <b-col>{{ row.item.age }}</b-col> -->
+                      <b-row class="mb-2">
+                        <b-col>
+                          <b>Name of Report : {{row.item.report_name}}</b>
+                        </b-col>
+                      </b-row>
+                      <!-- <b-col>{{ row.item.isActive }}</b-col> -->
+                      <b-row class="mb-2">
+                        <b-col>
+                          <b>Department/Staff needed :</b>
+                        </b-col>
+                      </b-row>
+                      <!-- </b-col>
+                      <b-col lg="6">-->
+                      <b-row class="mb-2">
+                        <b-col>
+                          <b>Type of Problem :</b>
+                        </b-col>
+                      </b-row>
+
+                      <b-row class="mb-2">
+                        <b-col>
+                          <b>Remarks :</b>
+                          <b-form-textarea
+                            style="background-color: white; width: 60%;"
+                            disabled
+                            v-model="row.item.report_remarks"
+                            placeholder="Remarks"
+                          ></b-form-textarea>
+                        </b-col>
+                      </b-row>
+                    </b-col>
+                    <b-col lg="4">
+                      <h3>{{row.item.situation_id}}</h3>
+                      <br />
+                      <br />
+                      <br />
+                      <br />
+                      <br />
+                      <br />
+                      <br />
+                      <b-button
+                        style="float:right; width: 80%;"
+                        size="sm"
+                        variant="success"
+                        @click="MarkDone(row)"
+                      >Done</b-button>
+                    </b-col>
+                    <!-- <b-button
+                            class="m-1"
+                            size="sm"
+                            variant="danger"
+                    >Request this Report to the Administrator</b-button>-->
+                    <!-- </b-col> -->
+                  </b-row>
+                </b-card>
+              </template>
+            </b-table>
+          </b-card>
+        </b-col>
       </b-row>
     </div>
-    <!-- <div class="footer-copyright text-center py-3">
-      <footer id="sticky-footer" class="py-4 bg-dark text-white-50 mb-0">
-        <div class="container text-center">
-          <a style="font-size: 13px;">Copyright &copy; General Services</a>
-        </div>
-      </footer>
-    </div>-->
+    <b-modal v-model="showModalAcceptReport" :noCloseOnEsc="true" :noCloseOnBackdrop="true">
+      <div slot="modal-title">Accept Report?</div>
+
+      <b-col lg="12">Are you sure you want to Accept this Report?</b-col>
+      <div slot="modal-footer">
+        <b-button :disabled="forms.staff.isSaving" variant="primary" @click="onAcceptingReport">
+          <icon v-if="forms.staff.isSaving" name="sync" spin></icon>
+          <i class="fa fa-check"></i>
+          I will Accept
+        </b-button>
+        <b-button variant="secondary" @click="showModalAcceptReport=false">Close</b-button>
+      </div>
+    </b-modal>
+
+    <b-modal v-model="showModalMarkdone" :noCloseOnEsc="true" :noCloseOnBackdrop="true">
+      <div slot="modal-title">Done?</div>
+
+      <b-col lg="12">Are you sure you want to Mark this Report as Done?</b-col>
+      <div slot="modal-footer">
+        <b-button :disabled="forms.staff.isSaving" variant="primary" @click="onMarkdoneReport">
+          <icon v-if="forms.staff.isSaving" name="sync" spin></icon>
+          <i class="fa fa-check"></i>
+          Yes
+        </b-button>
+        <b-button variant="secondary" @click="showModalMarkdone=false">No</b-button>
+      </div>
+    </b-modal>
   </div>
 </template>
 <script>
@@ -252,8 +370,9 @@ export default {
   data() {
     return {
       entryMode: "Add",
-      //   showModalEntry: false,
-      //   showModalDelete: false,
+      showModalEntry: false,
+      showModalAcceptReport: false,
+      showModalMarkdone: false,
       forms: {
         staff: {
           isSaving: false,
@@ -273,39 +392,39 @@ export default {
             {
               key: "report_id",
               label: "Report No.",
-              thStyle: { width: "150px" },
+              // thStyle: { width: "150px" },
               tdClass: "align-middle",
               sortable: true
             },
             {
               key: "account_no",
               label: "Account Number",
-              thStyle: { width: "150px" },
-              tdClass: "align-middle",
-              sortable: true
+              thStyle: { width: "120px" },
+              tdClass: "align-middle"
             },
             {
               key: "firstname",
               label: "Reported by",
-              tdClass: "align-middle",
-              sortable: true
+              tdClass: "align-middle"
             },
             {
               key: "department_name",
               label: "Department",
-              tdClass: "align-middle",
-              sortable: true
+              tdClass: "align-middle"
             },
             {
               key: "send_datetime",
               label: "Send date/time",
               tdClass: "align-middle",
-              sortable: true
+              sortable: true,
+              formatter: value => {
+                return this.moment(value, "MMMM DD, YYYY hh:mm A");
+              }
             },
             {
               key: "show_details",
               label: "",
-              thStyle: { width: "170px" },
+              thStyle: { width: "100px" },
               tdClass: "text-center"
             }
           ],
@@ -341,38 +460,104 @@ export default {
             console.log(err);
           });
       }
+    },
+    filterReports(status_id) {
+      return this.tables.reports.items.filter(r => r.status_id == status_id);
+    },
+    onAcceptingReport() {
+      this.forms.staff.isSaving = true;
+      this.$http
+        .put(
+          "api/staffaccept/delete/" + this.report_id,
+          this.forms.staff.fields,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token")
+            }
+          }
+        )
+        .then(response => {
+          this.forms.staff.isSaving = false;
+          this.$notify({
+            type: "success",
+            group: "notification",
+            title: "Success!",
+            text: "The report has been Accepted."
+          });
+
+          const index = this.tables.reports.items.findIndex(
+            item => item["report_id"] === response.data.data["report_id"]
+          );
+
+          this.$delete(this.tables.reports.items, index);
+          // this.paginations.queuereports.totalRows--;
+
+          this.showModalAcceptReport = false;
+        })
+        .catch(error => {
+          this.forms.staff.isSaving = false;
+          if (!error.response) return;
+          const errors = error.response.data.errors;
+          console.log(errors);
+        });
+    },
+
+    onMarkdoneReport() {
+      // this.deleteEntity(
+      //   "staffmarkdone",
+      //   this.report_id,
+      //   true,
+      //   "reports",
+      //   "report_id"
+      // );
+      this.forms.staff.isSaving = true;
+      this.$http
+        .put(
+          "api/staffmarkdone/delete/" + this.report_id,
+          this.forms.staff.fields,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token")
+            }
+          }
+        )
+        .then(response => {
+          this.forms.staff.isSaving = false;
+          this.$notify({
+            type: "success",
+            group: "notification",
+            title: "Success!",
+            text: "The report has been done."
+          });
+
+          const index = this.tables.reports.items.findIndex(
+            item => item["report_id"] === response.data.data["report_id"]
+          );
+
+          this.$delete(this.tables.reports.items, index);
+
+          this.showModalMarkdone = false;
+        })
+        .catch(error => {
+          this.forms.staff.isSaving = false;
+          if (!error.response) return;
+          const errors = error.response.data.errors;
+          console.log(errors);
+        });
+    },
+
+    async AcceptReport(row) {
+      this.report_id = row.item.report_id;
+      this.showModalAcceptReport = true;
+    },
+    async MarkDone(row) {
+      this.report_id = row.item.report_id;
+      this.showModalMarkdone = true;
     }
-    // GetReport(data) {
-    //   console.log("asdas");
-    //   var row = data.item;
-
-    //   this.report_id = row.report_id;
-    //   this.account_no = row.account_no;
-    //   this.client_name = row.account_no;
-
-    //   this.department_name = row.department_name;
-
-    //   this.$http
-    //     .get("api/report" + row.report_id, {
-    //       headers: {
-    //         Authorization: "Bearer " + localStorage.getItem("token")
-    //       }
-    //     })
-    //     .then(response => {
-    //       this.reports = response.data.data;
-    //       this.reports.forEach(s => {
-    //         s.is_selected = 0;
-    //       });
-    //     })
-    //     .catch(error => {
-    //       console.log(error);
-    //     });
-    //   this.row.toggleDetails;
-    // }
   },
   created() {
     this.$http
-      .get("api/reports", {
+      .get("api/staffreports", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")
         }

@@ -48,14 +48,42 @@ Route::middleware('auth:api')->group(function () {
     Route::get('departmentcheck/{id}', 'References\DepartmentsController@checkIfUsed');
     // END departments
 
+     //List parts
+    Route::get('parts', 'References\PartsController@index');
+    //List single parts
+    Route::get('part/{id}', 'References\PartsController@show');
+    //Create new parts
+    Route::post('part', 'References\PartsController@create');
+    //Update parts
+    Route::put('part/{id}', 'References\PartsController@update');
+    //Delete parts
+    Route::put('part/delete/{id}', 'References\PartsController@delete');
+    //Check if parts was used
+    Route::get('partcheck/{id}', 'References\PartsController@checkIfUsed');
+    // END parts
 
 
-    Route::get('reports', 'Utilities\ReportsController@index');
-    // Route::get('reports/{id}', 'Utilities\ReportsController@index');
+    Route::get('staffreports', 'Utilities\ReportsController@StaffReport');
+
+    Route::get('clientreports', 'Utilities\ReportsController@ClientReport');
+   
+    Route::get('dashboards', 'Utilities\ReportsController@Dashboard');
+
 
     // pag send ng report
-    Route::post('client', 'Utilities\ReportsController@create');
-    
+    Route::post('clientreport', 'Utilities\ReportsController@create');
+
+    Route::put('clientreport/delete/{id}', 'Utilities\ReportsController@CancelReport');
+
+    Route::put('clientreport/{id}', 'Utilities\ReportsController@UpdateReport');
+
+    Route::get('clientreport/{id}', 'Utilities\ReportsController@show');
+
+    Route::get('staffreport/{id}', 'Utilities\ReportsController@show');
+
+    Route::put('staffaccept/delete/{id}', 'Utilities\ReportsController@AcceptingReport');
+
+    Route::put('staffmarkdone/delete/{id}', 'Utilities\ReportsController@Markdone');
 
 
   
@@ -72,17 +100,17 @@ Route::middleware('auth:api')->group(function () {
     Route::get('staffcheck/{id}', 'References\StafflistsController@checkIfUsed');
 
 
-    Route::get('clients', 'References\ClientlistsController@index');
+    Route::get('clientlists', 'References\ClientlistsController@index');
 
-    Route::get('client/{id}', 'References\ClientlistsController@show');
+    Route::get('clientlist/{id}', 'References\ClientlistsController@show');
 
-    Route::post('client', 'References\ClientlistsController@create');
+    Route::post('clientlist', 'References\ClientlistsController@create');
 
-    Route::put('client/{id}', 'References\ClientlistsController@update');
+    Route::put('clientlist/{id}', 'References\ClientlistsController@update');
     
-    Route::put('client/delete/{id}', 'References\ClientlistsController@delete');
+    Route::put('clientlist/delete/{id}', 'References\ClientlistsController@delete');
   
-    Route::get('clientcheck/{id}', 'References\ClientlistsController@checkIfUsed');
+    Route::get('clientlistcheck/{id}', 'References\ClientlistsController@checkIfUsed');
 
     
 });

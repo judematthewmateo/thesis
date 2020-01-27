@@ -23,7 +23,7 @@ class ClientListsController extends Controller
      */
     public function index()
      {
-       $data['clients'] = User::select(
+       $data['clientlists'] = User::select(
             'b_users.*',
             'rd.department_name',
             'ru.user_type_id'
@@ -60,23 +60,23 @@ class ClientListsController extends Controller
         ]
     )->validate();
 
-    $client = new User();
-    $client->account_no = DB::select("select CreateAccountNo() as account_no")[0]->account_no;
-    $client->id_number = $request->input('id_number');
-    $client->firstname = $request->input('firstname');
-    $client->middlename = $request->input('middlename');
-    $client->lastname = $request->input('lastname');
-    $client->contact_number = $request->input('contact_number');
-    $client->department_id = $request->input('department_id');
-    $client->username = $request->input('username');
-    $client->password = Hash::make($request->input('password'));
-    $client->created_datetime = Carbon::now();
-    $client->created_by = Auth::user()->user_id;
+    $clientlist = new User();
+    $clientlist->account_no = DB::select("select CreateAccountNo() as account_no")[0]->account_no;
+    $clientlist->id_number = $request->input('id_number');
+    $clientlist->firstname = $request->input('firstname');
+    $clientlist->middlename = $request->input('middlename');
+    $clientlist->lastname = $request->input('lastname');
+    $clientlist->contact_number = $request->input('contact_number');
+    $clientlist->department_id = $request->input('department_id');
+    $clientlist->username = $request->input('username');
+    $clientlist->password = Hash::make($request->input('password'));
+    $clientlist->created_datetime = Carbon::now();
+    $clientlist->created_by = Auth::user()->user_id;
 
-    $client->save();
+    $clientlist->save();
 
     //return json based from the resource data
-    return ( new Reference( $client ))
+    return ( new Reference( $clientlist ))
             ->response()
             ->setStatusCode(201);
     }
@@ -100,9 +100,9 @@ class ClientListsController extends Controller
      */
     public function show($id)
     {
-        $client = User::findOrFail($id);
+        $clientlist = User::findOrFail($id);
 
-        return ( new Reference( $client ) )
+        return ( new Reference( $clientlist ) )
             ->response()
             ->setStatusCode(200);
     }
@@ -127,7 +127,7 @@ class ClientListsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $client = Staff::findOrFail($id);
+        $clientlist = Clientlist::findOrFail($id);
         
         Validator::make($request->all(),
         [
@@ -140,23 +140,21 @@ class ClientListsController extends Controller
         ]
     )->validate();
 
-    $client = new User();
-    $client->account_no = DB::select("select CreateAccountNo() as account_no")[0]->account_no;
-    $client->id_number = $request->input('id_number');
-    $client->firstname = $request->input('firstname');
-    $client->middlename = $request->input('middlename');
-    $client->lastname = $request->input('lastname');
-    $client->contact_number = $request->input('contact_number');
-    $client->department_id = $request->input('department_id');
-    $client->username = $request->input('username');
-    $client->password = Hash::make($request->input('password'));
-    $client->created_datetime = Carbon::now();
-    $client->created_by = Auth::user()->user_id;
+    $clientlist->id_number = $request->input('id_number');
+    $clientlist->firstname = $request->input('firstname');
+    $clientlist->middlename = $request->input('middlename');
+    $clientlist->lastname = $request->input('lastname');
+    $clientlist->contact_number = $request->input('contact_number');
+    $clientlist->department_id = $request->input('department_id');
+    $clientlist->username = $request->input('username');
+    $clientlist->password = Hash::make($request->input('password'));
+    $clientlist->created_datetime = Carbon::now();
+    $clientlist->created_by = Auth::user()->user_id;
 
-    $client->save();
+    $clientlist->save();
 
     //return json based from the resource data
-    return ( new Reference( $client ))
+    return ( new Reference( $clientlist ))
             ->response()
             ->setStatusCode(201);
     }
@@ -171,16 +169,16 @@ class ClientListsController extends Controller
 
     public function delete($id)
     {   
-        $client = Client::findOrFail($id);
+        $clientlist = Clientlist::findOrFail($id);
 
-        $client->is_deleted = 1;
-        $client->deleted_datetime = Carbon::now();
-        $client->deleted_by = Auth::user()->user_id;
+        $clientlist->is_deleted = 1;
+        $clientlist->deleted_datetime = Carbon::now();
+        $clientlist->deleted_by = Auth::user()->user_id;
 
         //update classification based on the http json body that is sent
-        $client->save();
+        $clientlist->save();
 
-        return ( new Reference( $client ) )
+        return ( new Reference( $clientlist ) )
             ->response()
             ->setStatusCode(200);
     }

@@ -45,7 +45,7 @@ class StaffListsController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
+     *i
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
@@ -71,6 +71,7 @@ class StaffListsController extends Controller
     $staff->department_id = $request->input('department_id');
     $staff->username = $request->input('username');
     $staff->password = Hash::make($request->input('password'));
+    $staff->user_type_id = 2;
     $staff->created_datetime = Carbon::now();
     $staff->created_by = Auth::user()->user_id;
 
