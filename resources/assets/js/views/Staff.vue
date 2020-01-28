@@ -1,4 +1,8 @@
 <style scoped>
+.button:hover {
+  background-color: lightgrey;
+  color: black;
+}
 hr {
   display: block;
   margin-top: 0.5%;
@@ -139,6 +143,7 @@ label {
                   <template v-slot:cell(show_details)="row">
                     <!-- action slot  :to="{path: 'products/' + data.item.id } -->
                     <b-button
+                      class="button"
                       variant="primary"
                       size="sm"
                       @click="row.toggleDetails()"
@@ -158,7 +163,10 @@ label {
                           <!-- <b-col>{{ row.item.age }}</b-col> -->
                           <b-row class="mb-2">
                             <b-col>
-                              <b>Name of Report : {{row.item.report_name}}</b>
+                              <b>
+                                Name of Report :
+                                <label>{{row.item.report_name}}</label>
+                              </b>
                             </b-col>
                           </b-row>
                           <!-- <b-col>{{ row.item.isActive }}</b-col> -->
@@ -198,7 +206,8 @@ label {
                           <br />
 
                           <b-button
-                            style="float:right;"
+                            class="button"
+                            style="float:right; margin-top:8px;"
                             size="sm"
                             variant="success"
                             @click="AcceptReport(row)"
@@ -257,6 +266,7 @@ label {
               <template v-slot:cell(show_details)="row">
                 <!-- action slot  :to="{path: 'products/' + data.item.id } -->
                 <b-button
+                  class="button"
                   variant="primary"
                   size="sm"
                   @click="row.toggleDetails()"
@@ -313,9 +323,10 @@ label {
                       <br />
                       <br />
                       <br />
-                      <br />
+
                       <b-button
-                        style="float:right; width: 80%;"
+                        class="button"
+                        style="float:right; width: 80%; margin-top: 8px;"
                         size="sm"
                         variant="success"
                         @click="MarkDone(row)"
@@ -340,12 +351,17 @@ label {
 
       <b-col lg="12">Are you sure you want to Accept this Report?</b-col>
       <div slot="modal-footer">
-        <b-button :disabled="forms.staff.isSaving" variant="primary" @click="onAcceptingReport">
+        <b-button
+          class="button"
+          :disabled="forms.staff.isSaving"
+          variant="primary"
+          @click="onAcceptingReport"
+        >
           <icon v-if="forms.staff.isSaving" name="sync" spin></icon>
           <i class="fa fa-check"></i>
           I will Accept
         </b-button>
-        <b-button variant="secondary" @click="showModalAcceptReport=false">Close</b-button>
+        <b-button class="button" variant="secondary" @click="showModalAcceptReport=false">Close</b-button>
       </div>
     </b-modal>
 
@@ -354,12 +370,17 @@ label {
 
       <b-col lg="12">Are you sure you want to Mark this Report as Done?</b-col>
       <div slot="modal-footer">
-        <b-button :disabled="forms.staff.isSaving" variant="primary" @click="onMarkdoneReport">
+        <b-button
+          class="button"
+          :disabled="forms.staff.isSaving"
+          variant="primary"
+          @click="onMarkdoneReport"
+        >
           <icon v-if="forms.staff.isSaving" name="sync" spin></icon>
           <i class="fa fa-check"></i>
           Yes
         </b-button>
-        <b-button variant="secondary" @click="showModalMarkdone=false">No</b-button>
+        <b-button class="button" variant="secondary" @click="showModalMarkdone=false">No</b-button>
       </div>
     </b-modal>
   </div>

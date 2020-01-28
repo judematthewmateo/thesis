@@ -1,4 +1,8 @@
 <style scoped>
+.button:hover {
+  background-color: lightgray;
+  color: black;
+}
 hr {
   display: block;
   margin-top: 0.5%;
@@ -105,6 +109,7 @@ a {
               <!-- row button and search input -->
               <b-col sm="4">
                 <b-button
+                  class="button"
                   variant="primary"
                   @click="showModalEntry = true, entryMode='Add', clearFields('clientreport')"
                 >
@@ -142,6 +147,7 @@ a {
                   <template v-slot:cell(show_details)="row">
                     <!-- action slot  :to="{path: 'products/' + data.item.id } -->
                     <b-button
+                      class="button"
                       variant="primary"
                       size="sm"
                       @click="row.toggleDetails()"
@@ -161,33 +167,36 @@ a {
                               <label>&emsp;{{row.item.report_id}}</label>
                             </b-col>
                           </b-row>
-                          <!-- <b-col>{{ row.item.age }}</b-col> -->
+
                           <b-row class="mb-2">
                             <b-col>
-                              <b>Report Accept by :</b>
+                              <b>Report Accept by : {{row.item.firstname}} {{row.item.lastname}}</b>
                             </b-col>
                           </b-row>
-                          <!-- <b-col>{{ row.item.isActive }}</b-col> -->
+
                           <b-row class="mb-2">
                             <b-col>
                               <b>Department : {{row.item.accept_department}}</b>
                             </b-col>
                           </b-row>
-                          <!-- <b-col>{{ row.item.isActive }}</b-col> -->
+                          <b-row class="mb-2">
+                            <b-col>
+                              <b>Situation : {{row.item.situation_id}}</b>
+                            </b-col>
+                          </b-row>
                         </b-col>
                         <b-col lg="3">
                           <b-row class="mb-2">
                             <b-col>
                               <b>Name of Report : {{row.item.report_name}}</b>
-                              <!-- <b-col>{{ row.item.isActive }}</b-col> -->
                             </b-col>
                           </b-row>
                           <b-row class="mb-2">
                             <b-col>
-                              <b>Staff/Department needed :</b>
+                              <b>Department/Staff needed : {{row.item.need_department}}</b>
                             </b-col>
                           </b-row>
-                          <!-- <b-col>{{ row.item.isActive }}</b-col> -->
+
                           <b-row class="mb-2">
                             <b-col>
                               <b>Remarks :</b>
@@ -207,13 +216,13 @@ a {
                           <br />
 
                           <b-button
-                            class="m-1"
+                            class="button m-1"
                             size="sm"
                             variant="success"
                             @click="setUpdate(row)"
                           >Update this Report</b-button>
                           <b-button
-                            class="m-1"
+                            class="button m-1"
                             size="sm"
                             variant="danger"
                             :disabled="forms.clientreport.isDeleting"
@@ -334,6 +343,7 @@ a {
       <div slot="modal-footer">
         <!-- modal footer buttons -->
         <b-button
+          class="button"
           :disabled="forms.clientreport.isSaving"
           variant="primary"
           @click="onClientReportEntry"
@@ -342,7 +352,7 @@ a {
           <i class="fa fa-check"></i>
           Send
         </b-button>
-        <b-button variant="secondary" @click="showModalEntry=false">Close</b-button>
+        <b-button class="button" variant="secondary" @click="showModalEntry=false">Close</b-button>
       </div>
     </b-modal>
 
@@ -351,12 +361,17 @@ a {
 
       <b-col lg="12">Are you sure you want to Cancel this Report?</b-col>
       <div slot="modal-footer">
-        <b-button :disabled="forms.clientreport.isSaving" variant="primary" @click="onReportDelete">
+        <b-button
+          class="button"
+          :disabled="forms.clientreport.isSaving"
+          variant="primary"
+          @click="onReportDelete"
+        >
           <icon v-if="forms.clientreport.isSaving" name="sync" spin></icon>
           <i class="fa fa-check"></i>
           OK
         </b-button>
-        <b-button variant="secondary" @click="showModalDelete=false">Close</b-button>
+        <b-button class="button" variant="secondary" @click="showModalDelete=false">Close</b-button>
       </div>
     </b-modal>
   </div>

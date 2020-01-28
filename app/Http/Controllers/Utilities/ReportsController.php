@@ -29,11 +29,13 @@ class ReportsController extends Controller
             'tb_reports.*',
             'bu.firstname' , 
             'rdf.department_name',
+             'rda.department_name',
             'bu.account_no',
             'rs.status_name'
             
  )
-                    ->leftJoin('refdepartment as rdf', 'rdf.department_id', '=', 'tb_reports.from_department')
+                    ->leftJoin('refdepartment as rda', 'rda.department_id', '=', 'tb_reports.from_department')
+                    ->leftJoin('refdepartment as rdf', 'rdf.department_id', '=', 'tb_reports.accept_department')
                     ->leftJoin('b_users as bu', 'bu.user_id', '=', 'tb_reports.from_user')
                     ->leftJoin('report_status as rs', 'rs.status_id', '=', 'tb_reports.status_id')
                     ->where('tb_reports.is_cancel', 0)
