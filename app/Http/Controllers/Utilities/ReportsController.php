@@ -61,9 +61,11 @@ class ReportsController extends Controller
             'bu.firstname' , 
             'rdf.department_name',
             'bu.account_no',
-            'rs.status_name'
+            'rs.status_name',
+            'rsit.situation_name'
             
  )
+                    ->leftJoin('report_situation as rsit', 'rsit.situation_id', '=', 'tb_reports.situation_id')
                     ->leftJoin('refdepartment as rdf', 'rdf.department_id', '=', 'tb_reports.from_department')
                     ->leftJoin('b_users as bu', 'bu.user_id', '=', 'tb_reports.from_user')
                     ->leftJoin('report_status as rs', 'rs.status_id', '=', 'tb_reports.status_id')
@@ -94,11 +96,11 @@ class ReportsController extends Controller
                     ->leftJoin('b_users as bu', 'bu.user_id', '=', 'tb_reports.from_user')
                     ->leftJoin('report_status as rs', 'rs.status_id', '=', 'tb_reports.status_id')
                     ->leftJoin('report_situation as rsituation', 'rsituation.situation_id', '=', 'tb_reports.situation_id')
-                    ->where('tb_reports.is_cancel', 0)
+                    // ->where('tb_reports.is_cancel', 0)
                     ->orderBy('report_id', 'asc')
                     ->get();
 
-        $data['departments'] = Department::where('is_deleted', 0)->where('user_type', 1) ->orderBy('department_id')->get();
+        // $data['departments'] = Department::where('is_deleted', 0)->where('user_type', 1) ->orderBy('department_id')->get();
         $data['accounts'] = count(User::where('is_deleted', 0)->get());
         return $data;
 
@@ -126,6 +128,7 @@ class ReportsController extends Controller
     $report->need_department = $request->input('need_department');
     $report->what_part = $request->input('what_part');
     $report->situation_id = $request->input('situation_id');
+    $report->target_date = date('Y-m-d', strtotime($request->input('target_date')));
     $report->report_remarks = $request->input('report_remarks');
     $report->send_datetime = Carbon::now();
     $report->from_user = Auth::user()->user_id;
@@ -144,6 +147,7 @@ class ReportsController extends Controller
                     ->leftJoin('refdepartment as rdf', 'rdf.department_id', '=', 'tb_reports.from_department')
                     ->leftJoin('b_users as bu', 'bu.user_id', '=', 'tb_reports.from_user')
                     ->leftJoin('report_status as rs', 'rs.status_id', '=', 'tb_reports.status_id')
+                    ->orderBy('report_id', 'asc')
                     ->findOrFail($report->report_id);
 
     
@@ -220,6 +224,7 @@ class ReportsController extends Controller
     $report->need_department = $request->input('need_department');
     $report->what_part = $request->input('what_part');
     $report->situation_id = $request->input('situation_id');
+    $report->target_date = date('Y-m-d', strtotime($request->input('target_date')));
     $report->report_remarks = $request->input('report_remarks');
 
 

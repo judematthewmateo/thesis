@@ -27,7 +27,7 @@ class StaffListsController extends Controller
             'b_users.*',
             'rd.department_name',
             'rd.department_id',
-            'ru.user_type_id'
+            'ru.user_type_name'
 
 )
                     ->leftJoin('refdepartment as rd', 'rd.department_id', '=', 'b_users.department_id')

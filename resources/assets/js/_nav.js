@@ -10,12 +10,12 @@ export default {
     {
       name: 'Staffs',
       url: '/references/stafflists',
-      icon: 'icon-list'
+      icon: 'icon-people'
     },
     {
       name: 'Clients',
       url: '/references/clientlists',
-      icon: 'icon-list'
+      icon: 'icon-people'
     },
     {
       name: 'Departments',
@@ -25,7 +25,7 @@ export default {
     {
       name: 'Parts',
       url: '/references/parts',
-      icon: 'icon-list'
+      icon: 'icon-settings'
     },
   ],
 }

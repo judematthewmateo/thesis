@@ -69,6 +69,14 @@ input[type="number"]::-webkit-outer-spin-button {
                   <!-- table -->
 
                   <template v-slot:cell(action)="data">
+                    <b-button
+                      class="button"
+                      variant="primary"
+                      size="sm"
+                      @click="data.toggleDetails()"
+                    >
+                      <i class="fa fa-eye"></i>
+                    </b-button>
                     <!-- action slot  :to="{path: 'departments/' + data.item.id } -->
                     <b-btn :size="'sm'" variant="primary" @click="setUpdate(data)">
                       <i class="fa fa-edit"></i>
@@ -83,6 +91,61 @@ input[type="number"]::-webkit-outer-spin-button {
                       <icon v-if="forms.staff.isDeleting" name="sync" spin></icon>
                       <i v-else class="fa fa-trash"></i>
                     </b-btn>
+                  </template>
+                  <template v-slot:row-details="data">
+                    <b-card>
+                      <b-row>
+                        <b-col lg="6">
+                          <b-row class="mb-2">
+                            <b-col>
+                              <label>Account Number. :&emsp; {{data.item.account_no}}</label>
+                            </b-col>
+                          </b-row>
+                          <b-row class="mb-2">
+                            <b-col>
+                              <label>ID NO. : &emsp; {{data.item.id_number}}</label>
+                            </b-col>
+                          </b-row>
+                          <b-row class="mb-2">
+                            <b-col>
+                              <label>First Name : &emsp; {{data.item.firstname}}</label>
+                            </b-col>
+                          </b-row>
+                          <b-row class="mb-2">
+                            <b-col>
+                              <label>Middle Name. : &emsp; {{data.item.middlename}}</label>
+                            </b-col>
+                          </b-row>
+                          <b-row class="mb-2">
+                            <b-col>
+                              <label>Last Name : &emsp; {{data.item.lastname}}</label>
+                            </b-col>
+                          </b-row>
+                        </b-col>
+                        <b-col lg="3">
+                          <b-row class="mb-2">
+                            <b-col>
+                              <label>User Type : &emsp; {{data.item.user_type_name}}</label>
+                            </b-col>
+                          </b-row>
+                          <b-row class="mb-2">
+                            <b-col>
+                              <label>Department : &emsp; {{data.item.department_name}}</label>
+                            </b-col>
+                          </b-row>
+                          <b-row class="mb-2">
+                            <b-col>
+                              <label>Contact NO. : &emsp; {{data.item.contact_number}}</label>
+                            </b-col>
+                          </b-row>
+                          <b-row class="mb-2">
+                            <b-col>
+                              <label>Username : &emsp; {{data.item.username}}</label>
+                            </b-col>
+                          </b-row>
+                        </b-col>
+                      </b-row>
+                    </b-card>
                   </template>
                 </b-table>
                 <!-- table -->
@@ -413,7 +476,7 @@ export default {
             {
               key: "action",
               label: "",
-              thStyle: { width: "80px" },
+              thStyle: { width: "120px" },
               tdClass: "text-center"
             }
           ],

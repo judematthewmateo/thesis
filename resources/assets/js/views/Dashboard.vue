@@ -55,24 +55,42 @@
       </h5>
       <b-row class="mb-2">
         <!-- row button and search input -->
-        <b-col sm="4">
-          <label>Client Department</label>
-          <select2 ref="department_id" :allowClear="false" :placeholder="'Select Department'">
-            <option
-              v-for="right in options.departments.items"
-              :key="right.department_id"
-              :value="right.department_id"
-            >{{right.department_name}}</option>
-          </select2>
+        <b-col sm="3">
+          <b-form-input
+            class="mt-4"
+            v-model="filters.dashboards.criteria"
+            type="text"
+            placeholder="Search"
+          ></b-form-input>
         </b-col>
-
-        <b-col sm="4">
+        <b-col sm="3">
           <span></span>
         </b-col>
 
-        <b-col sm="4">
-          <label></label>
-          <b-form-input type="text" placeholder="Search"></b-form-input>
+        <b-col sm="3">
+          <label>From Date</label>
+          <date-picker
+            id="from_datetime"
+            format="MMMM/DD/YYYY"
+            type="date"
+            lang="en"
+            input-class="form-control mx-input"
+            ref="from_datetime"
+            :clearable="false"
+          ></date-picker>
+        </b-col>
+
+        <b-col sm="3">
+          <label>To Date</label>
+          <date-picker
+            id="to_datetime"
+            format="MMMM/DD/YYYY"
+            type="date"
+            lang="en"
+            input-class="form-control mx-input"
+            ref="to_datetime"
+            :clearable="false"
+          ></date-picker>
         </b-col>
       </b-row>
       <b-table
@@ -114,7 +132,11 @@ export default {
   data: function() {
     return {
       forms: {
-        dashboard: {}
+        dashboard: {
+          fields: {
+            from_datetime: new Date()
+          }
+        }
       },
       tables: {
         dashboards: {

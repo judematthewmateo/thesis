@@ -26,7 +26,7 @@ class ClientListsController extends Controller
        $data['clientlists'] = User::select(
             'b_users.*',
             'rd.department_name',
-            'ru.user_type_id'
+            'ru.user_type_name'
 
 )
                     ->leftJoin('refdepartment as rd', 'rd.department_id', '=', 'b_users.department_id')
@@ -72,7 +72,7 @@ class ClientListsController extends Controller
     $clientlist->password = Hash::make($request->input('password'));
     $clientlist->created_datetime = Carbon::now();
     $clientlist->created_by = Auth::user()->user_id;
-
+    $clientlist->user_type_id = 3;
     $clientlist->save();
 
     //return json based from the resource data

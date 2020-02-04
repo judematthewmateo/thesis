@@ -24,7 +24,7 @@ a {
   <div class="animated fadeIn">
     <notifications group="notification" />
     <b-nav extra-large class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">General Services</a>
+      <a class="navbar-brand" style="color: lightgreen;">General Services</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -39,14 +39,14 @@ a {
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="/Staff">Home</a>
+            <a class="nav-link" type="button" @click="showEntry=false">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">History log</a>
+            <a class="nav-link" type="button" @click="showEntry=true">History log</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" @click="logOutStaff()">Logout</a>
+            <a class="nav-link" @click="logOutStaff()" type="button">Logout</a>
           </li>
         </ul>
       </div>
@@ -71,7 +71,7 @@ a {
           </b-col>
 
           <b-col sm="2">
-            <b-img
+            <!-- <b-img
               class="mt-2"
               thumbnail
               fluid
@@ -83,7 +83,7 @@ a {
               background-attachment: fixed;
               background-repeat: no-repeat;
               background-position: center;"
-            ></b-img>
+            ></b-img>-->
           </b-col>
           <b-col sm="5">
             <span></span>
@@ -92,155 +92,162 @@ a {
 
         <hr />
       </div>
+      <div v-show="!showEntry" class="animated fadeIn">
+        <b-row>
+          <!-- main row -->
+          <b-col sm="12">
+            <b-card class="ml-3 mr-3">
+              <h5 slot="header">
+                <!-- table header -->
+                <span class="text-primary">
+                  <i class="fa fa-bars"></i>
+                  Report Lists
+                  <small class="font-italic">List of your reports .</small>
+                </span>
+              </h5>
+              <b-row class="mb-2">
+                <!-- row button and search input -->
+                <b-col sm="4">
+                  <b-button
+                    class="button"
+                    variant="primary"
+                    @click="showModalEntry = true, entryMode='Add', clearFields('clientreport')"
+                  >
+                    <i class="fa fa-plus-circle"></i> Send New Report
+                  </b-button>
+                </b-col>
 
-      <b-row>
-        <!-- main row -->
-        <b-col sm="12">
-          <b-card class="ml-3 mr-3">
-            <h5 slot="header">
-              <!-- table header -->
-              <span class="text-primary">
-                <i class="fa fa-bars"></i>
-                Report Lists
-                <small class="font-italic">List of your reports .</small>
-              </span>
-            </h5>
-            <b-row class="mb-2">
+                <b-col sm="4">
+                  <span></span>
+                </b-col>
+
+                <b-col sm="4">
+                  <b-form-input type="text" placeholder="Search"></b-form-input>
+                </b-col>
+              </b-row>
               <!-- row button and search input -->
-              <b-col sm="4">
-                <b-button
-                  class="button"
-                  variant="primary"
-                  @click="showModalEntry = true, entryMode='Add', clearFields('clientreport')"
-                >
-                  <i class="fa fa-plus-circle"></i> Send New Report
-                </b-button>
-              </b-col>
 
-              <b-col sm="4">
-                <span></span>
-              </b-col>
+              <b-row>
+                <b-col sm="12">
+                  <!-- row table -->
 
-              <b-col sm="4">
-                <b-form-input type="text" placeholder="Search"></b-form-input>
-              </b-col>
-            </b-row>
-            <!-- row button and search input -->
+                  <b-table
+                    responsive
+                    striped
+                    hover
+                    small
+                    bordered
+                    show-empty
+                    :fields="tables.queuereports.fields"
+                    :items.sync="tables.queuereports.items"
+                    :filter="filters.queuereports.criteria"
+                  >
+                    <!-- table -->
 
-            <b-row>
-              <b-col sm="12">
-                <!-- row table -->
+                    <template v-slot:cell(show_details)="row">
+                      <!-- action slot  :to="{path: 'products/' + data.item.id } -->
+                      <b-button
+                        class="button"
+                        variant="primary"
+                        size="sm"
+                        @click="row.toggleDetails()"
+                      >
+                        <i class="fa fa-eye"></i>
+                        {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
+                      </b-button>
+                    </template>
 
-                <b-table
-                  responsive
-                  striped
-                  hover
-                  small
-                  bordered
-                  show-empty
-                  :fields="tables.queuereports.fields"
-                  :items.sync="tables.queuereports.items"
-                  :filter="filters.queuereports.criteria"
-                >
+                    <template v-slot:row-details="row">
+                      <b-card>
+                        <b-row class="mb-2">
+                          <b-col lg="3">
+                            <span></span>
+                          </b-col>
+                          <b-col lg="3">
+                            <b-row class="mb-2">
+                              <b-col>
+                                <b>Report No. :</b>
+                                <label>&emsp;{{row.item.report_id}}</label>
+                              </b-col>
+                            </b-row>
+
+                            <b-row class="mb-2">
+                              <b-col>
+                                <b>Report Accept by : {{row.item.firstname}} {{row.item.lastname}}</b>
+                              </b-col>
+                            </b-row>
+
+                            <b-row class="mb-2">
+                              <b-col>
+                                <b>Department : {{row.item.accept_department}}</b>
+                              </b-col>
+                            </b-row>
+                            <b-row class="mb-2">
+                              <b-col>
+                                <b>Situation : {{row.item.situation_id}}</b>
+                              </b-col>
+                            </b-row>
+                          </b-col>
+                          <b-col lg="3">
+                            <b-row class="mb-2">
+                              <b-col>
+                                <b>Name of Report : {{row.item.report_name}}</b>
+                              </b-col>
+                            </b-row>
+                            <b-row class="mb-2">
+                              <b-col>
+                                <b>Department/Staff needed : {{row.item.need_department}}</b>
+                              </b-col>
+                            </b-row>
+
+                            <b-row class="mb-2">
+                              <b-col>
+                                <b>Remarks :</b>
+                                <b-form-textarea
+                                  style="background-color: white;"
+                                  disabled
+                                  v-model="row.item.report_remarks"
+                                  placeholder="Remarks"
+                                ></b-form-textarea>
+                              </b-col>
+                            </b-row>
+                          </b-col>
+
+                          <b-col lg="3">
+                            <br />
+                            <br />
+                            <br />
+
+                            <b-button
+                              class="button m-1"
+                              size="sm"
+                              variant="success"
+                              @click="setUpdate(row)"
+                            >
+                              <i class="fa fa-edit"></i> Update this Report
+                            </b-button>
+                            <b-button
+                              class="button m-1"
+                              size="sm"
+                              variant="danger"
+                              :disabled="forms.clientreport.isDeleting"
+                              @click="setDelete(row)"
+                            >
+                              <icon v-if="forms.clientreport.isDeleting" name="sync" spin></icon>
+                              <i class="fa fa-times"></i> Cancel this Report
+                            </b-button>
+                          </b-col>
+                        </b-row>
+                      </b-card>
+                    </template>
+                  </b-table>
                   <!-- table -->
-
-                  <template v-slot:cell(show_details)="row">
-                    <!-- action slot  :to="{path: 'products/' + data.item.id } -->
-                    <b-button
-                      class="button"
-                      variant="primary"
-                      size="sm"
-                      @click="row.toggleDetails()"
-                    >{{ row.detailsShowing ? 'Hide' : 'Show'}} Details</b-button>
-                  </template>
-
-                  <template v-slot:row-details="row">
-                    <b-card>
-                      <b-row class="mb-2">
-                        <b-col lg="3">
-                          <span></span>
-                        </b-col>
-                        <b-col lg="3">
-                          <b-row class="mb-2">
-                            <b-col>
-                              <b>Report No. :</b>
-                              <label>&emsp;{{row.item.report_id}}</label>
-                            </b-col>
-                          </b-row>
-
-                          <b-row class="mb-2">
-                            <b-col>
-                              <b>Report Accept by : {{row.item.firstname}} {{row.item.lastname}}</b>
-                            </b-col>
-                          </b-row>
-
-                          <b-row class="mb-2">
-                            <b-col>
-                              <b>Department : {{row.item.accept_department}}</b>
-                            </b-col>
-                          </b-row>
-                          <b-row class="mb-2">
-                            <b-col>
-                              <b>Situation : {{row.item.situation_id}}</b>
-                            </b-col>
-                          </b-row>
-                        </b-col>
-                        <b-col lg="3">
-                          <b-row class="mb-2">
-                            <b-col>
-                              <b>Name of Report : {{row.item.report_name}}</b>
-                            </b-col>
-                          </b-row>
-                          <b-row class="mb-2">
-                            <b-col>
-                              <b>Department/Staff needed : {{row.item.need_department}}</b>
-                            </b-col>
-                          </b-row>
-
-                          <b-row class="mb-2">
-                            <b-col>
-                              <b>Remarks :</b>
-                              <b-form-textarea
-                                style="background-color: white;"
-                                disabled
-                                v-model="row.item.report_remarks"
-                                placeholder="Remarks"
-                              ></b-form-textarea>
-                            </b-col>
-                          </b-row>
-                        </b-col>
-
-                        <b-col lg="3">
-                          <br />
-                          <br />
-                          <br />
-
-                          <b-button
-                            class="button m-1"
-                            size="sm"
-                            variant="success"
-                            @click="setUpdate(row)"
-                          >Update this Report</b-button>
-                          <b-button
-                            class="button m-1"
-                            size="sm"
-                            variant="danger"
-                            :disabled="forms.clientreport.isDeleting"
-                            @click="setDelete(row)"
-                          >
-                            <icon v-if="forms.clientreport.isDeleting" name="sync" spin></icon>Cancel this Report
-                          </b-button>
-                        </b-col>
-                      </b-row>
-                    </b-card>
-                  </template>
-                </b-table>
-                <!-- table -->
-              </b-col>
-            </b-row>
-          </b-card>
-        </b-col>
-      </b-row>
+                </b-col>
+              </b-row>
+            </b-card>
+          </b-col>
+        </b-row>
+      </div>
     </div>
     <b-modal
       v-model="showModalEntry"
@@ -331,6 +338,20 @@ a {
             </b-form-radio-group>
           </b-form-group>
           <b-form-group>
+            <label>Target Date</label>
+            <date-picker
+              v-model="forms.clientreport.fields.target_date"
+              id="target_date"
+              format="MMMM/DD/YYYY"
+              type="date"
+              lang="en"
+              input-class="form-control mx-input"
+              ref="target_date"
+              :clearable="false"
+              placeholder="Select Target Date"
+            ></date-picker>
+          </b-form-group>
+          <b-form-group>
             <b-form-textarea
               row="2"
               placeholder="Remarks"
@@ -374,8 +395,67 @@ a {
         <b-button class="button" variant="secondary" @click="showModalDelete=false">Close</b-button>
       </div>
     </b-modal>
+    <div v-show="showEntry" class="animated fadeIn">
+      <b-card class="m-0">
+        <h5 slot="header">
+          <!-- table header -->
+          <span class="text-primary">
+            <i class="fa fa-bars"></i>
+            Report Lists
+            <small class="font-italic">List of all reports .</small>
+          </span>
+        </h5>
+        <b-row class="mb-2">
+          <!-- row button and search input -->
+
+          <b-col sm="3">
+            <b-form-input class="mt-4" type="text" placeholder="Search"></b-form-input>
+          </b-col>
+          <b-col sm="3">
+            <span></span>
+          </b-col>
+
+          <b-col sm="3">
+            <label>From Date</label>
+            <date-picker
+              id="from_datetime"
+              format="MMMM/DD/YYYY"
+              type="date"
+              lang="en"
+              input-class="form-control mx-input"
+              ref="from_datetime"
+              :clearable="false"
+            ></date-picker>
+          </b-col>
+
+          <b-col sm="3">
+            <label>To Date</label>
+            <date-picker
+              id="to_datetime"
+              format="MMMM/DD/YYYY"
+              type="date"
+              lang="en"
+              input-class="form-control mx-input"
+              ref="to_datetime"
+              :clearable="false"
+            ></date-picker>
+          </b-col>
+        </b-row>
+        <b-table
+          responsive
+          striped
+          hover
+          small
+          bordered
+          show-empty
+          :fields="tables.reportlogs.fields"
+          :items.sync="tables.reportlogs.items"
+        ></b-table>
+      </b-card>
+    </div>
   </div>
 </template>
+
 <script>
 export default {
   name: "clientreports",
@@ -383,7 +463,7 @@ export default {
     return {
       entryMode: "Add",
       showModalEntry: false,
-      //   showModalEntry: false,
+      showEntry: false,
       showModalDelete: false,
       forms: {
         clientreport: {
@@ -433,6 +513,15 @@ export default {
               }
             },
             {
+              key: "target_datetime",
+              label: "Target Date",
+              tdClass: "align-middle",
+              sortable: true,
+              formatter: value => {
+                return this.moment(value, "MMMM DD, YYYY");
+              }
+            },
+            {
               key: "status_name",
               label: "Status",
               tdClass: "align-middle",
@@ -447,6 +536,17 @@ export default {
             }
           ],
           items: []
+        },
+        reportlogs: {
+          fields: [
+            {
+              key: "report_id",
+              label: "Report No.",
+              thStyle: { width: "80px" },
+              tdClass: "align-middle",
+              sortable: true
+            }
+          ]
         }
       },
       filters: {
