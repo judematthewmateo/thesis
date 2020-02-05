@@ -270,12 +270,10 @@ label {
               >
                 <template v-slot:cell(show_details)="row">
                   <!-- action slot  :to="{path: 'products/' + data.item.id } -->
-                  <b-button
-                    class="button"
-                    variant="primary"
-                    size="sm"
-                    @click="row.toggleDetails()"
-                  >{{ row.detailsShowing ? 'Hide' : 'Show'}} Details</b-button>
+                  <b-button class="button" variant="primary" size="sm" @click="row.toggleDetails()">
+                    <i class="fa fa-eye"></i>
+                    {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
+                  </b-button>
                 </template>
 
                 <template v-slot:row-details="row">

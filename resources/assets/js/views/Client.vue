@@ -18,6 +18,42 @@ hr {
 a {
   font-size: 20px;
 }
+
+.rate {
+  float: left;
+  height: 60px;
+  padding: 0 14px;
+}
+.rate:not(:checked) > input {
+  position: absolute;
+  top: -9999px;
+}
+.rate:not(:checked) > label {
+  float: right;
+  width: 1em;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 48px;
+  color: #ccc;
+}
+.rate:not(:checked) > label:before {
+  content: "★ ";
+}
+.rate > input:checked ~ label {
+  color: #ffc700;
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+  color: #deb217;
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+  color: #c59b08;
+}
 </style>
 
 <template scope>
@@ -214,28 +250,38 @@ a {
                           </b-col>
 
                           <b-col lg="3">
-                            <br />
-                            <br />
-                            <br />
-
-                            <b-button
-                              class="button m-1"
-                              size="sm"
-                              variant="success"
-                              @click="setUpdate(row)"
-                            >
-                              <i class="fa fa-edit"></i> Update this Report
-                            </b-button>
-                            <b-button
-                              class="button m-1"
-                              size="sm"
-                              variant="danger"
-                              :disabled="forms.clientreport.isDeleting"
-                              @click="setDelete(row)"
-                            >
-                              <icon v-if="forms.clientreport.isDeleting" name="sync" spin></icon>
-                              <i class="fa fa-times"></i> Cancel this Report
-                            </b-button>
+                            <b-row>
+                              <b-button
+                                class="button m-1"
+                                variant="success"
+                                style="width:45%;"
+                                @click="showModalRating=true"
+                              >
+                                <i class="fa fa-star"></i> Rate the Service
+                              </b-button>
+                            </b-row>
+                            <b-row>
+                              <b-button
+                                style="width:45%;"
+                                class="button m-1"
+                                variant="success"
+                                @click="setUpdate(row)"
+                              >
+                                <i class="fa fa-edit"></i> Update this Report
+                              </b-button>
+                            </b-row>
+                            <b-row>
+                              <b-button
+                                style="width:45%;"
+                                class="button m-1"
+                                variant="danger"
+                                :disabled="forms.clientreport.isDeleting"
+                                @click="setDelete(row)"
+                              >
+                                <icon v-if="forms.clientreport.isDeleting" name="sync" spin></icon>
+                                <i class="fa fa-times"></i> Cancel this Report
+                              </b-button>
+                            </b-row>
                           </b-col>
                         </b-row>
                       </b-card>
@@ -453,6 +499,31 @@ a {
         ></b-table>
       </b-card>
     </div>
+    <b-modal v-model="showModalRating" :noCloseOnEsc="true" :noCloseOnBackdrop="true" size="sm">
+      <div slot="modal-title">
+        Please Rate
+        <i class="fa fa-smile-o" aria-hidden="true"></i>
+      </div>
+      <div class="rate">
+        <input type="radio" id="star5" name="rate" value="5" />
+        <label for="star5">5 stars</label>
+        <input type="radio" id="star4" name="rate" value="4" />
+        <label for="star4">4 stars</label>
+        <input type="radio" id="star3" name="rate" value="3" />
+        <label for="star3">3 stars</label>
+        <input type="radio" id="star2" name="rate" value="2" />
+        <label for="star2">2 stars</label>
+        <input type="radio" id="star1" name="rate" value="1" />
+        <label for="star1">1 star</label>
+      </div>
+      <div slot="modal-footer">
+        <!-- modal footer buttons -->
+        <b-button variant="primary">
+          <i class="fa fa-check"></i>
+          Submit
+        </b-button>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -465,6 +536,7 @@ export default {
       showModalEntry: false,
       showEntry: false,
       showModalDelete: false,
+      showModalRating: false,
       forms: {
         clientreport: {
           isSaving: false,
@@ -518,7 +590,7 @@ export default {
               tdClass: "align-middle",
               sortable: true,
               formatter: value => {
-                return this.moment(value, "MMMM DD, YYYY");
+                return this.moment(value, "MMMM DD, YYYY hh:mm A");
               }
             },
             {

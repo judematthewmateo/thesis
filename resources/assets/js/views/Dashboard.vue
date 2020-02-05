@@ -56,15 +56,9 @@
       <b-row class="mb-2">
         <!-- row button and search input -->
         <b-col sm="3">
-          <b-form-input
-            class="mt-4"
-            v-model="filters.dashboards.criteria"
-            type="text"
-            placeholder="Search"
-          ></b-form-input>
-        </b-col>
-        <b-col sm="3">
-          <span></span>
+          <b-button class="mt-4 btn-success" style="float-center; width:100%; height: 30px">
+            <i class="fa fa-print"></i> Print Report
+          </b-button>
         </b-col>
 
         <b-col sm="3">
@@ -75,6 +69,7 @@
             type="date"
             lang="en"
             input-class="form-control mx-input"
+            v-model="from_datetime"
             ref="from_datetime"
             :clearable="false"
           ></date-picker>
@@ -88,9 +83,18 @@
             type="date"
             lang="en"
             input-class="form-control mx-input"
+            v-model="to_datetime"
             ref="to_datetime"
             :clearable="false"
           ></date-picker>
+        </b-col>
+        <b-col sm="3">
+          <b-form-input
+            class="mt-4"
+            v-model="filters.dashboards.criteria"
+            type="text"
+            placeholder="Search"
+          ></b-form-input>
         </b-col>
       </b-row>
       <b-table
@@ -101,7 +105,7 @@
         bordered
         show-empty
         :fields="tables.dashboards.fields"
-        :items.sync="tables.dashboards.items"
+        :items="filterReports"
         :filter="filters.dashboards.criteria"
       ></b-table>
     </b-card>
@@ -201,7 +205,9 @@ export default {
           items: []
         }
       },
-      accounts: 0
+      accounts: 0,
+      from_datetime: null,
+      to_datetime: null
     };
   },
   methods: {
@@ -217,6 +223,21 @@ export default {
         $variant = "danger";
       }
       return $variant;
+    }
+  },
+  computed: {
+    filterReports() {
+      if (this.from_datetime != null && this.to_datetime != null) {
+        return this.tables.dashboards.items.filter(
+          d =>
+            this.moment(d.send_datetime, "YYYY-MM-DD") >=
+              this.moment(this.from_datetime, "YYYY-MM-DD") &&
+            this.moment(d.send_datetime, "YYYY-MM-DD") <=
+              this.moment(this.to_datetime, "YYYY-MM-DD")
+        );
+      } else {
+        return this.tables.dashboards.items;
+      }
     }
   },
   created() {

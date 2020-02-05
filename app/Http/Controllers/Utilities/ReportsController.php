@@ -128,7 +128,7 @@ class ReportsController extends Controller
     $report->need_department = $request->input('need_department');
     $report->what_part = $request->input('what_part');
     $report->situation_id = $request->input('situation_id');
-    $report->target_date = date('Y-m-d', strtotime($request->input('target_date')));
+    $report->target_date = date('Y-m-d H:i:s', strtotime($request->input('target_date')));
     $report->report_remarks = $request->input('report_remarks');
     $report->send_datetime = Carbon::now();
     $report->from_user = Auth::user()->user_id;
