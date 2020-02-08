@@ -91,38 +91,24 @@ a {
     <div style="overflow: hidden;">
       <div style="background-color: lightgray;">
         <b-row>
-          <b-col sm="5">
-            <div class="profile">
-              <h5>{{$store.state.user.firstname}} {{$store.state.user.lastname}}</h5>
+          <b-col lg="3">
+            <img src="images/olfulogo1.png" style="width:70%; hieght:70px; margin-left: 47%;" />
+          </b-col>
+          <b-col lg="5">
+            <center>
+              <h3 class="mt-5 ml-10">{{$store.state.user.firstname}} {{$store.state.user.lastname}}</h3>
 
-              <label>Username : {{$store.state.user.username}}</label>
-
+              <label>Username :</label>
+              <a>{{$store.state.user.username}}</a>
               <br />
               <label>Department :</label>
               <a>{{$store.state.user.department_name}}</a>
               <br />
-              <label>User type :</label>
-              <a>Client</a>
-            </div>
+              <label>User type : {{$store.state.user.user_type_name}}</label>
+            </center>
           </b-col>
-
-          <b-col sm="2">
-            <!-- <b-img
-              class="mt-2"
-              thumbnail
-              fluid
-              src="images/login/login.jpg"
-              rounded="circle"
-              style="height:190; 
-              weight:500px; 
-              background-size: cover; 
-              background-attachment: fixed;
-              background-repeat: no-repeat;
-              background-position: center;"
-            ></b-img>-->
-          </b-col>
-          <b-col sm="5">
-            <span></span>
+          <b-col lg="4">
+            <img src="images/iserve.png" style="width:50%; hieght:50px;" />
           </b-col>
         </b-row>
 
@@ -256,12 +242,14 @@ a {
                                 variant="success"
                                 style="width:45%;"
                                 @click="showModalRating=true"
+                                v-show="row.item.status_id == 2"
                               >
                                 <i class="fa fa-star"></i> Rate the Service
                               </b-button>
                             </b-row>
                             <b-row>
                               <b-button
+                                v-show="row.item.status_id == 0"
                                 style="width:45%;"
                                 class="button m-1"
                                 variant="success"
@@ -277,6 +265,7 @@ a {
                                 variant="danger"
                                 :disabled="forms.clientreport.isDeleting"
                                 @click="setDelete(row)"
+                                v-show="row.item.status_id == 0"
                               >
                                 <icon v-if="forms.clientreport.isDeleting" name="sync" spin></icon>
                                 <i class="fa fa-times"></i> Cancel this Report
@@ -447,7 +436,7 @@ a {
           <!-- table header -->
           <span class="text-primary">
             <i class="fa fa-bars"></i>
-            Report Lists
+            History Log
             <small class="font-italic">List of all reports .</small>
           </span>
         </h5>
@@ -455,14 +444,17 @@ a {
           <!-- row button and search input -->
 
           <b-col sm="3">
-            <b-form-input class="mt-4" type="text" placeholder="Search"></b-form-input>
-          </b-col>
-          <b-col sm="3">
-            <span></span>
+            <b-button
+              @click="previewReport()"
+              class="mt-4 btn-success"
+              style="float-center; width:100%; height: 30px"
+            >
+              <i class="fa fa-print"></i> Print Report
+            </b-button>
           </b-col>
 
           <b-col sm="3">
-            <label>From Date</label>
+            <label>From Done Date</label>
             <date-picker
               id="from_datetime"
               format="MMMM/DD/YYYY"
@@ -471,11 +463,12 @@ a {
               input-class="form-control mx-input"
               ref="from_datetime"
               :clearable="false"
+              v-model="from_datetime"
             ></date-picker>
           </b-col>
 
           <b-col sm="3">
-            <label>To Date</label>
+            <label>To Done Date</label>
             <date-picker
               id="to_datetime"
               format="MMMM/DD/YYYY"
@@ -484,7 +477,11 @@ a {
               input-class="form-control mx-input"
               ref="to_datetime"
               :clearable="false"
+              v-model="to_datetime"
             ></date-picker>
+          </b-col>
+          <b-col sm="3">
+            <b-form-input class="mt-4" type="text" placeholder="Search"></b-form-input>
           </b-col>
         </b-row>
         <b-table
@@ -495,7 +492,7 @@ a {
           bordered
           show-empty
           :fields="tables.reportlogs.fields"
-          :items.sync="tables.reportlogs.items"
+          :items="filterReports"
         ></b-table>
       </b-card>
     </div>
@@ -518,7 +515,7 @@ a {
       </div>
       <div slot="modal-footer">
         <!-- modal footer buttons -->
-        <b-button variant="primary">
+        <b-button variant="primary" @click="AddRating">
           <i class="fa fa-check"></i>
           Submit
         </b-button>
@@ -596,8 +593,7 @@ export default {
             {
               key: "status_name",
               label: "Status",
-              tdClass: "align-middle",
-              sortable: true
+              tdClass: "align-middle"
             },
 
             {
@@ -617,8 +613,53 @@ export default {
               thStyle: { width: "80px" },
               tdClass: "align-middle",
               sortable: true
+            },
+            {
+              key: "report_name",
+              label: "Name of Report",
+              thStyle: { width: "150px" },
+              tdClass: "align-middle"
+            },
+            {
+              key: "send_datetime",
+              label: "Send date/time",
+              tdClass: "align-middle",
+              sortable: true,
+              formatter: value => {
+                return this.moment(value, "MMMM DD, YYYY hh:mm A");
+              }
+            },
+            {
+              key: "done_datetime",
+              label: "Done date/time",
+              tdClass: "align-middle",
+              sortable: true,
+              formatter: value => {
+                if (value != null) {
+                  return this.moment(value, "MMMM DD, YYYY hh:mm A");
+                }
+              }
+            },
+            {
+              key: "accept_user",
+              label: "Staff Name",
+              tdClass: "align-middle",
+              sortable: true
+            },
+            {
+              key: "status_name",
+              label: "Status",
+              tdClass: "align-middle",
+              sortable: true
+            },
+            {
+              key: "situation_name",
+              label: "Situation",
+              tdClass: "align-middle",
+              sortable: true
             }
-          ]
+          ],
+          items: []
         }
       },
       filters: {
@@ -646,6 +687,8 @@ export default {
       },
       user_id: null,
       report_id: null,
+      from_datetime: null,
+      to_datetime: null,
       row: []
     };
   },
@@ -683,14 +726,21 @@ export default {
         this.updateEntity("clientreport", "report_id", true, this.row);
       }
     },
+    AddRating() {
+      if (this.entryMode == "Add") {
+        //name of form
+        //if from a modal?
+        //name of table to be inserted
+        this.createEntity("clientreport", true, "queuereports");
+      } else {
+        //name of form
+        //name of primary key
+        //if from a modal?
+        //row to be edited
+        this.updateEntity("clientreport", "report_id", true, this.row);
+      }
+    },
     onReportDelete() {
-      // this.deleteEntity(
-      //   "clientreport",
-      //   this.report_id,
-      //   true,
-      //   "queuereports",
-      //   "report_id"
-      // );
       this.forms.clientreport.isSaving = true;
       this.$http
         .put(
@@ -745,6 +795,37 @@ export default {
           p => p.department_id == value
         );
       }
+    },
+    previewReport() {
+      var date_from = 0;
+      var date_to = 0;
+      if (this.from_datetime != null && this.to_datetime != null) {
+        date_from = this.moment(this.from_datetime, "YYYY-MM-DD");
+        date_to = this.moment(this.to_datetime, "YYYY-MM-DD");
+      }
+      window.open(
+        "api/reports/clientreportlogs/" +
+          date_from +
+          "/" +
+          date_to +
+          "/" +
+          this.$store.state.user.user_id
+      );
+    }
+  },
+  computed: {
+    filterReports() {
+      if (this.from_datetime != null && this.to_datetime != null) {
+        return this.tables.reportlogs.items.filter(
+          d =>
+            this.moment(d.send_datetime, "YYYY-MM-DD") >=
+              this.moment(this.from_datetime, "YYYY-MM-DD") &&
+            this.moment(d.send_datetime, "YYYY-MM-DD") <=
+              this.moment(this.to_datetime, "YYYY-MM-DD")
+        );
+      } else {
+        return this.tables.reportlogs.items;
+      }
     }
   },
   created() {
@@ -756,6 +837,7 @@ export default {
       })
       .then(response => {
         this.tables.queuereports.items = response.data.reports;
+        this.tables.reportlogs.items = response.data.reportlogs;
         this.options.departments.items = response.data.departments;
         this.options.parts.items = response.data.parts;
       })

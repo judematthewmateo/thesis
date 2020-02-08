@@ -5,7 +5,7 @@
 }
 .sec {
   height: 400%;
-  color: #ffffff;
+  color: white;
   text-align: justify;
   background-attachment: fixed;
   background-size: cover;
@@ -25,15 +25,19 @@
 <body class="body">
   <notifications group="notification" />
   <section class="sec" style="background-image: url(images/login/login.jpg);">
+    <!-- <section class="sec"> -->
     <div class="app flex-row align-items-center">
       <div class="container">
         <div class="row justify-content-center">
-          <!-- <div style="background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.3);color: #f1f1f1; padding: 20px; width: 30%;"> -->
-
           <div
             class="row"
-            style="background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.3);color: #f1f1f1;padding: 20px; width: 35%; "
+            style="background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.3);color: #f1f1f1; padding: 20px; width: 35%;"
           >
+            <!-- <div
+            class="row"
+            
+            style="background: rgb(0, 0, 0); background: black;color: #f1f1f1;padding: 20px; width: 35%; "
+            >-->
             <div class="col-12">
               <h1>Login</h1>
 

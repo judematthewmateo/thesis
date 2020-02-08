@@ -56,7 +56,11 @@
       <b-row class="mb-2">
         <!-- row button and search input -->
         <b-col sm="3">
-          <b-button class="mt-4 btn-success" style="float-center; width:100%; height: 30px">
+          <b-button
+            @click="previewReport()"
+            class="mt-4 btn-success"
+            style="float-center; width:100%; height: 30px"
+          >
             <i class="fa fa-print"></i> Print Report
           </b-button>
         </b-col>
@@ -223,6 +227,15 @@ export default {
         $variant = "danger";
       }
       return $variant;
+    },
+    previewReport() {
+      var date_from = 0;
+      var date_to = 0;
+      if (this.from_datetime != null && this.to_datetime != null) {
+        date_from = this.moment(this.from_datetime, "YYYY-MM-DD");
+        date_to = this.moment(this.to_datetime, "YYYY-MM-DD");
+      }
+      window.open("api/reports/printreport/" + date_from + "/" + date_to);
     }
   },
   computed: {

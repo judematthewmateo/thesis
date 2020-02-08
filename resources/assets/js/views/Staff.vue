@@ -18,9 +18,6 @@ hr {
 a {
   font-size: 20px;
 }
-label {
-  font-size: 15px;
-}
 </style>
 
 <template>
@@ -58,9 +55,12 @@ label {
     <div style="overflow: hidden;">
       <div style="background-color: lightgray;">
         <b-row>
-          <b-col sm="5">
-            <div class="profile">
-              <h5>{{$store.state.user.firstname}} {{$store.state.user.lastname}}</h5>
+          <b-col lg="3">
+            <img src="images/olfulogo1.png" style="width:70%; hieght:70px; margin-left: 47%;" />
+          </b-col>
+          <b-col lg="5">
+            <center>
+              <h3 class="mt-5 ml-10">{{$store.state.user.firstname}} {{$store.state.user.lastname}}</h3>
 
               <label>Username :</label>
               <a>{{$store.state.user.username}}</a>
@@ -68,28 +68,11 @@ label {
               <label>Department :</label>
               <a>{{$store.state.user.department_name}}</a>
               <br />
-              <label>User type :</label>
-              <a>Staff</a>
-            </div>
+              <label>User type : {{$store.state.user.user_type_name}}</label>
+            </center>
           </b-col>
-
-          <b-col sm="2">
-            <!-- <b-img
-              class="mt-2"
-              thumbnail
-              fluid
-              src="images/login/login.jpg"
-              rounded="circle"
-              style="height:150px; 
-              weight:500px; 
-              background-size: cover; 
-              background-attachment: fixed;
-              background-repeat: no-repeat;
-              background-position: center;"
-            ></b-img>-->
-          </b-col>
-          <b-col sm="5">
-            <span></span>
+          <b-col lg="4">
+            <img src="images/iserve.png" style="width:50%; hieght:50px;" />
           </b-col>
         </b-row>
 
@@ -395,7 +378,7 @@ label {
           <!-- table header -->
           <span class="text-primary">
             <i class="fa fa-bars"></i>
-            Report Lists
+            History Log
             <small class="font-italic">List of all reports .</small>
           </span>
         </h5>
@@ -403,14 +386,17 @@ label {
           <!-- row button and search input -->
 
           <b-col sm="3">
-            <b-form-input class="mt-4" type="text" placeholder="Search"></b-form-input>
-          </b-col>
-          <b-col sm="3">
-            <span></span>
+            <b-button
+              @click="previewReport()"
+              class="mt-4 btn-success"
+              style="float-center; width:100%; height: 30px"
+            >
+              <i class="fa fa-print"></i> Print Report
+            </b-button>
           </b-col>
 
           <b-col sm="3">
-            <label>From Date</label>
+            <label>From Done Date</label>
             <date-picker
               id="from_datetime"
               format="MMMM/DD/YYYY"
@@ -419,11 +405,12 @@ label {
               input-class="form-control mx-input"
               ref="from_datetime"
               :clearable="false"
+              v-model="from_datetime"
             ></date-picker>
           </b-col>
 
           <b-col sm="3">
-            <label>To Date</label>
+            <label>To Done Date</label>
             <date-picker
               id="to_datetime"
               format="MMMM/DD/YYYY"
@@ -432,7 +419,11 @@ label {
               input-class="form-control mx-input"
               ref="to_datetime"
               :clearable="false"
+              v-model="to_datetime"
             ></date-picker>
+          </b-col>
+          <b-col sm="3">
+            <b-form-input class="mt-4" type="text" placeholder="Search"></b-form-input>
           </b-col>
         </b-row>
         <b-table
@@ -442,12 +433,9 @@ label {
           small
           bordered
           show-empty
-          :fields="tables.staffreportlogs.fields"
-          :items.sync="tables.staffreportlogs.items"
+          :fields="tables.reportlogs.fields"
+          :items="filterReportLogs"
         ></b-table>
-        <b-button class="m-1 btn-success" style="float-right">
-          <i class="fa fa-print"></i> Print Report
-        </b-button>
       </b-card>
     </div>
   </div>
@@ -519,15 +507,59 @@ export default {
           ],
           items: []
         },
-        staffreportlogs: {
+        reportlogs: {
           fields: [
             {
               key: "report_id",
               label: "Report No.",
+              thStyle: { width: "80px" },
+              tdClass: "align-middle",
+              sortable: true
+            },
+            {
+              key: "report_name",
+              label: "Name of Report",
+              thStyle: { width: "150px" },
+              tdClass: "align-middle"
+            },
+            {
+              key: "firstname",
+              label: "Send by",
+              thStyle: { width: "150px" },
+              tdClass: "align-middle"
+            },
+            {
+              key: "send_datetime",
+              label: "Send date/time",
+              tdClass: "align-middle",
+              sortable: true,
+              formatter: value => {
+                return this.moment(value, "MMMM DD, YYYY hh:mm A");
+              }
+            },
+            {
+              key: "done_datetime",
+              label: "Done date/time",
+              tdClass: "align-middle",
+              sortable: true,
+              formatter: value => {
+                return this.moment(value, "MMMM DD, YYYY hh:mm A");
+              }
+            },
+            {
+              key: "status_name",
+              label: "Status",
+              tdClass: "align-middle",
+              sortable: true
+            },
+            {
+              key: "situation_name",
+              label: "Situation",
               tdClass: "align-middle",
               sortable: true
             }
-          ]
+          ],
+          items: []
         }
       },
       filters: {
@@ -537,6 +569,8 @@ export default {
       },
       user_id: null,
       report_id: null,
+      from_datetime: null,
+      to_datetime: null,
       row: []
     };
   },
@@ -602,13 +636,6 @@ export default {
     },
 
     onMarkdoneReport() {
-      // this.deleteEntity(
-      //   "staffmarkdone",
-      //   this.report_id,
-      //   true,
-      //   "reports",
-      //   "report_id"
-      // );
       this.forms.staff.isSaving = true;
       this.$http
         .put(
@@ -652,6 +679,30 @@ export default {
     async MarkDone(row) {
       this.report_id = row.item.report_id;
       this.showModalMarkdone = true;
+    },
+    previewReport() {
+      var date_from = 0;
+      var date_to = 0;
+      if (this.from_datetime != null && this.to_datetime != null) {
+        date_from = this.moment(this.from_datetime, "YYYY-MM-DD");
+        date_to = this.moment(this.to_datetime, "YYYY-MM-DD");
+      }
+      window.open("api/reports/staffreportlogs/" + date_from + "/" + date_to);
+    }
+  },
+  computed: {
+    filterReportLogs() {
+      if (this.from_datetime != null && this.to_datetime != null) {
+        return this.tables.reportlogs.items.filter(
+          d =>
+            this.moment(d.done_datetime, "YYYY-MM-DD") >=
+              this.moment(this.from_datetime, "YYYY-MM-DD") &&
+            this.moment(d.done_datetime, "YYYY-MM-DD") <=
+              this.moment(this.to_datetime, "YYYY-MM-DD")
+        );
+      } else {
+        return this.tables.reportlogs.items;
+      }
     }
   },
   created() {
@@ -663,6 +714,7 @@ export default {
       })
       .then(response => {
         this.tables.reports.items = response.data.reports;
+        this.tables.reportlogs.items = response.data.reportlogs;
       })
       .catch(error => {
         console.log(error);

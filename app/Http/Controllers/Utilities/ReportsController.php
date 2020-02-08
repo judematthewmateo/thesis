@@ -31,14 +31,36 @@ class ReportsController extends Controller
             'rdf.department_name',
              'rda.department_name',
             'bu.account_no',
-            'rs.status_name'
+            'rs.status_name',
+            'rsit.situation_name'
             
  )
                     ->leftJoin('refdepartment as rda', 'rda.department_id', '=', 'tb_reports.from_department')
                     ->leftJoin('refdepartment as rdf', 'rdf.department_id', '=', 'tb_reports.accept_department')
                     ->leftJoin('b_users as bu', 'bu.user_id', '=', 'tb_reports.from_user')
                     ->leftJoin('report_status as rs', 'rs.status_id', '=', 'tb_reports.status_id')
+                    ->leftJoin('report_situation as rsit', 'rsit.situation_id', '=', 'tb_reports.situation_id')
                     ->where('tb_reports.is_cancel', 0)
+                    ->where('tb_reports.from_user', Auth::user()->user_id)
+                    ->orderBy('report_id', 'asc')
+                    ->get();
+
+    
+        $data['reportlogs'] = Report::select(
+            'tb_reports.*',
+            'bu.firstname' , 
+            'rdf.department_name',
+             'rda.department_name',
+            'bu.account_no',
+            'rs.status_name',
+            'rsit.situation_name'
+            
+ )
+                    ->leftJoin('refdepartment as rda', 'rda.department_id', '=', 'tb_reports.from_department')
+                    ->leftJoin('refdepartment as rdf', 'rdf.department_id', '=', 'tb_reports.accept_department')
+                    ->leftJoin('b_users as bu', 'bu.user_id', '=', 'tb_reports.from_user')
+                    ->leftJoin('report_status as rs', 'rs.status_id', '=', 'tb_reports.status_id')
+                    ->leftJoin('report_situation as rsit', 'rsit.situation_id', '=', 'tb_reports.situation_id')
                     ->where('tb_reports.from_user', Auth::user()->user_id)
                     ->orderBy('report_id', 'asc')
                     ->get();
@@ -47,6 +69,7 @@ class ReportsController extends Controller
         ->orderBy('department_id')->get();
         $data['parts'] = Part::where('is_deleted', 0)
         ->orderBy('department_id')->get();
+        
         return $data;
 
 
@@ -74,6 +97,31 @@ class ReportsController extends Controller
                     ->orderBy('report_id', 'asc')
                     ->get();
 
+        $data['reportlogs'] = Report::select(
+            'tb_reports.*',
+            'bu.firstname' , 
+            'rdf.department_name',
+             'rda.department_name',
+            'bu.account_no',
+            'rs.status_name',
+            'rsit.situation_name'
+            
+ )
+                    ->leftJoin('refdepartment as rda', 'rda.department_id', '=', 'tb_reports.from_department')
+                    ->leftJoin('refdepartment as rdf', 'rdf.department_id', '=', 'tb_reports.accept_department')
+                    ->leftJoin('b_users as bu', 'bu.user_id', '=', 'tb_reports.from_user')
+                    ->leftJoin('report_status as rs', 'rs.status_id', '=', 'tb_reports.status_id')
+                    ->leftJoin('report_situation as rsit', 'rsit.situation_id', '=', 'tb_reports.situation_id')
+                    ->where('tb_reports.accept_user', Auth::user()->user_id)
+                    ->where('tb_reports.status_id', 2)
+                    ->orderBy('report_id', 'asc')
+                    ->get();
+
+        $data['departments'] = Department::where('is_deleted', 0)->where('user_type', 1)
+        ->orderBy('department_id')->get();
+        $data['parts'] = Part::where('is_deleted', 0)
+        ->orderBy('department_id')->get();
+        
         return $data;
 
 
