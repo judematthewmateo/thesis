@@ -117,4 +117,4 @@ Route::middleware('auth:api')->group(function () {
 
 Route::get('reports/printreport/{from}/{to}', 'Reports\ReportsController@PrintReport');
 Route::get('reports/clientreportlogs/{from}/{to}/{user_id}', 'Reports\ReportsController@ClientReportlogs');
-Route::get('reports/staffreportlogs/{from}/{to}', 'Reports\ReportsController@StaffReportlogs');
+Route::get('reports/staffreportlogs/{from}/{to}/{user_id}', 'Reports\ReportsController@StaffReportlogs');

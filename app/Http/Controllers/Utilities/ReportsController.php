@@ -50,7 +50,7 @@ class ReportsController extends Controller
             'tb_reports.*',
             'bu.firstname' , 
             'rdf.department_name',
-             'rda.department_name',
+            'rda.department_name',
             'bu.account_no',
             'rs.status_name',
             'rsit.situation_name'
@@ -225,7 +225,7 @@ class ReportsController extends Controller
     public function show($id)
     { 
            
-         $report = Report::findOrFail($id);
+        $report = Report::findOrFail($id);
 
         return ( new Reference( $report ) )
             ->response()

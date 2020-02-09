@@ -687,7 +687,14 @@ export default {
         date_from = this.moment(this.from_datetime, "YYYY-MM-DD");
         date_to = this.moment(this.to_datetime, "YYYY-MM-DD");
       }
-      window.open("api/reports/staffreportlogs/" + date_from + "/" + date_to);
+      window.open(
+        "api/reports/staffreportlogs/" +
+          date_from +
+          "/" +
+          date_to +
+          "/" +
+          this.$store.state.user.user_id
+      );
     }
   },
   computed: {

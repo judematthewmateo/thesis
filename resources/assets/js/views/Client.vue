@@ -587,7 +587,9 @@ export default {
               tdClass: "align-middle",
               sortable: true,
               formatter: value => {
-                return this.moment(value, "MMMM DD, YYYY hh:mm A");
+                if (value != null) {
+                  return this.moment(value, "MMMM DD, YYYY");
+                }
               }
             },
             {
@@ -641,7 +643,7 @@ export default {
               }
             },
             {
-              key: "accept_user",
+              key: "firstname",
               label: "Staff Name",
               tdClass: "align-middle",
               sortable: true

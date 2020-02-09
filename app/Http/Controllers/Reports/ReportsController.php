@@ -33,8 +33,6 @@ class ReportsController extends Controller
 
         $data['reports'] = $data['reports']->get();
 
-        // return $data['reports']->get();
-
         $data['date_from'] = $from_date;
         $data['date_to'] = $to_date;
 
@@ -83,7 +81,7 @@ class ReportsController extends Controller
         $mpdf->WriteHTML($content);
         $mpdf->Output();
     }
-     public function StaffReportlogs($from_date, $to_date)
+     public function StaffReportlogs($from_date, $to_date, $user_id)
     {
         $data['reports'] = Report::select(
                             'tb_reports.*',
@@ -98,7 +96,7 @@ class ReportsController extends Controller
                     ->leftJoin('report_status as rs', 'rs.status_id', '=', 'tb_reports.status_id')
                     ->leftJoin('report_situation as rsituation', 'rsituation.situation_id', '=', 'tb_reports.situation_id')
                     ->where('tb_reports.status_id', 2)
-                    ->where('tb_reports.from_user', Auth::user()->user_id)
+                    ->where('tb_reports.accept_user', $user_id)
                     ->orderBy('report_id', 'asc');
                     
         if($from_date != 0 || $to_date != 0)
