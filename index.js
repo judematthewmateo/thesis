@@ -6,21 +6,6 @@ import Full from '@/containers/Full'
 
 // Views
 import Dashboard from '@/views/Dashboard'
-// import Charts from '@/views/Charts'
-// import Widgets from '@/views/Widgets'
-
-// Views - Components
-// import Buttons from '@/views/components/Buttons'
-// import SocialButtons from '@/views/components/SocialButtons'
-// import Cards from '@/views/components/Cards'
-// import Forms from '@/views/components/Forms'
-// import Modals from '@/views/components/Modals'
-// import Switches from '@/views/components/Switches'
-// import Tables from '@/views/components/Tables'
-
-// Views - Icons
-// import FontAwesome from '@/views/icons/FontAwesome'
-// import SimpleLineIcons from '@/views/icons/SimpleLineIcons'
 
 // Views - Pages
 import Page404 from '@/views/pages/Page404'
@@ -32,6 +17,9 @@ import Register from '@/views/pages/Register'
 
 //Views - Utilities
 import users from '@/views/utilities/Users'
+
+import products from '@/views/product/Products'
+import orders from '@/views/order/Orders'
 
 
 import store from '../store'
@@ -54,26 +42,54 @@ const router = new Router({
           component: Dashboard,
           meta: { requiresAuth: true },
         },
-        // {
-        //   path: 'charts',
-        //   name: 'Charts',
-        //   component: Charts
-        // },
         {
-          path: 'accounts',
-          name: 'Accounts',
+          path: 'product',
+          name: 'Product',
           component: {
             render (c) { return c('router-view') }
           },
+
           children: [
             {
-              path: 'users',
-              name: 'Users',
-              component: users,
+              path: 'Products',
+              name: 'Products',
+              component: products,
               meta: {requiresAuth: true}
             },
-          ]
-        },
+          ]},
+
+          {
+            path: 'order',
+            name: 'Order',
+            component: {
+              render (c) { return c('router-view') }
+            },
+  
+            children: [
+              {
+                path: 'Orders',
+                name: 'orders',
+                component: orders,
+                meta: {requiresAuth: true}
+              },
+            ]},
+          
+        
+        // {
+        //   path: 'accounts',
+        //   name: 'Accounts',
+        //   component: {
+        //     render (c) { return c('router-view') }
+        //   },
+        //   children: [
+        //     {
+        //       path: 'users',
+        //       name: 'Users',
+        //       component: users,
+        //       meta: {requiresAuth: true}
+        //     },
+        //   ]
+        // },
       ]
     },
     {

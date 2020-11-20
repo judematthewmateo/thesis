@@ -19,12 +19,35 @@
 .titlelabelbot {
   font-size: 12px;
 }
+.fb-btn {
+  
+  color:white;
+  min-width: 149px;
+  background-color: #3C5898;
+  height: 2.5rem;
+  border-radius: .5rem;
+  font-weight: 350;
+  font-size: 0.85rem;
+
+
+}
+.gmail-btn {
+  
+  color:white;
+  min-width: 163px;
+  background-color: #e55353;
+  height: 2.5rem;
+  border-radius: .5rem;
+  font-weight: 350;
+  font-size: 0.85rem;
+}
+
 </style>
 <template>
 <!-- style="background-image: url(images/login/login.jpg); background-position: center; background-repeat: no-repeat;background-size:contain;" -->
 <body class="body">
   <notifications group="notification" />
-  <section class="sec" style="background-image: url(images/login/login.jpg);">
+  <section class="sec">
     <!-- <section class="sec"> -->
     <div class="app flex-row align-items-center">
       <div class="container">
@@ -40,6 +63,7 @@
             >-->
             <div class="col-12">
               <h1>Login</h1>
+              
 
               <p>Sign In to your account</p>
               <b-form @submit.prevent="authLogin()" @input="login.success = null">
@@ -48,16 +72,16 @@
                     <i class="icon-user"></i>
                   </span>
                   <b-form-input
-                    ref="username"
-                    v-model="login.username"
+                    ref="email"
+                    v-model="login.email"
                     type="text"
-                    placeholder="Username"
+                    placeholder="Email"
                   ></b-form-input>
                 </div>
                 <div class="input-group mb-4">
                   <b-form-invalid-feedback>
                     <i class="fa fa-exclamation-triangle text-danger"></i>
-                    <span v-if="login.success==false">Incorrect username or password.</span>
+                    <span v-if="login.success==false">Incorrect email or password.</span>
                   </b-form-invalid-feedback>
 
                   <span class="input-group-addon">
@@ -66,45 +90,24 @@
                   <b-form-input v-model="login.password" type="password" placeholder="Password"></b-form-input>
                 </div>
                 <div class="row">
-                  <div class="col-6">
+                  
+                 
+                  <div class="col-2">
                     <b-btn :disabled="login.is_saving" type="submit" variant="primary" px-4>Login</b-btn>
+                  </div>
+                   <div class="col-4">
+                    <b-btn  variant="secondary" px-4>Sign Up</b-btn>
                   </div>
                   <div class="col-6 text-right">
                     <button type="button" class="btn btn-link px-0">Forgot password?</button>
                   </div>
                 </div>
+             <hr style="width:99%;height:10px;text-align:left;margin-left:0">
+
+              <b-btn class="fb-btn" ><i class="fa fa-facebook-official" aria-hidden="true"></i> Login with Facebook</b-btn>
+              <b-btn class="gmail-btn" ><i class="fa fa-google" aria-hidden="true"></i> Login with Gmail</b-btn>
               </b-form>
             </div>
-
-            <!-- <div class="col-6">
-              <div class="card-body text-center">
-                <h2>Sign up</h2>
-                <p>Create your account to enjoy the benefits of this system.</p>
-
-                <b-button variant="primary" @click="UsertypeModal = !UsertypeModal">Register Now!</b-button>
-              </div>
-            </div>
-          </div>
-          <div>
-           
-            <b-modal v-model="UsertypeModal" :noCloseOnBackdrop="true">
-              <div slot="modal-title" style="height:15px">
-               
-                <label class="titlelabel">Please choose your kind of User.</label>
-                <p class="titlelabelbot">
-                  <i class="fa fa-info-circle" aria-hidden="true"></i>
-                  NOTE : Make sure you enter your right User Type.
-                </p>
-              </div>
-              <div class="row justify-content-center">
-                <b-button size="lg" class="m-3" variant="primary" href="/#/registerstaff">Technician</b-button>
-                <b-button size="lg" class="m-3" variant="success" href="/#/registerclient">Client</b-button>
-              </div>
-             
-              <div slot="modal-footer">
-                
-              </div>
-            </b-modal>-->
           </div>
         </div>
       </div>
@@ -120,7 +123,7 @@ export default {
     return {
       UsertypeModal: false,
       login: {
-        username: null,
+        email: null,
         password: null,
         is_saving: false
       }
@@ -131,12 +134,12 @@ export default {
       this.login.is_saving = true;
       this.$http
         .post("api/auth/login", {
-          username: this.login.username,
+          email: this.login.email,
           password: this.login.password
         })
         .then(response => {
           this.$store.commit("loginUser");
-          this.$store.commit("user", response.data.user);
+          this.$store.commit("email", response.data.email);
           localStorage.setItem("token", response.data.access_token);
           this.$notify({
             type: "success",
@@ -165,14 +168,14 @@ export default {
             type: "error",
             group: "notification",
             title: "Error!",
-            text: "Incorrect username or password."
+            text: "Incorrect email or password."
           });
           this.login.is_saving = false;
         });
     }
   },
   mounted() {
-    this.focusElement("username");
+    this.focusElement("email");
   }
 };
 </script>

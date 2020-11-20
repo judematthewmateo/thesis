@@ -35,15 +35,26 @@ Route::middleware('auth:api')->group(function () {
 
 
     //List Departments
-    Route::get('departments', 'References\DepartmentsController@index');
+    Route::get('products', 'Controller\ProductsController@index');
+    Route::get('sohr', 'Controller\OrdersController@index');
+    Route::post('soln', 'Controller\OrdersController@index');
+    Route::put('products/delete/{id}', 'Controller\ProductsController@delete');
+    Route::put('products/{id}', 'Controller\ProductsController@update');
+    Route::get('products/{id}', 'Controller\ProductsController@show');
+    Route::put('acceptneworder/delete/{id}', 'Controller\OrdersController@AcceptNewOrder');
+    Route::put('declineneworder/delete/{id}', 'Controller\OrdersController@DeclineNewOrder');
+    Route::put('acceptintransit/{id}', 'Controller\OrdersController@AcceptIntransit');
+    Route::put('delivered/delete/{id}', 'Controller\OrdersController@Delivered');
+
+
     //List single department
     Route::get('department/{id}', 'References\DepartmentsController@show');
     //Create new department
-    Route::post('department', 'References\DepartmentsController@create');
+    Route::post('products', 'Controller\ProductsController@create');
     //Update department
     Route::put('department/{id}', 'References\DepartmentsController@update');
     //Delete department
-    Route::put('department/delete/{id}', 'References\DepartmentsController@delete');
+    
     //Check if department was used
     Route::get('departmentcheck/{id}', 'References\DepartmentsController@checkIfUsed');
     // END departments
@@ -115,6 +126,6 @@ Route::middleware('auth:api')->group(function () {
     
 });
 
-Route::get('reports/printreport/{from}/{to}', 'Reports\ReportsController@PrintReport');
-Route::get('reports/clientreportlogs/{from}/{to}/{user_id}', 'Reports\ReportsController@ClientReportlogs');
-Route::get('reports/staffreportlogs/{from}/{to}/{user_id}', 'Reports\ReportsController@StaffReportlogs');
+// Route::get('reports/printreport/{from}/{to}', 'Reports\ReportsController@PrintReport');
+// Route::get('reports/clientreportlogs/{from}/{to}/{user_id}', 'Reports\ReportsController@ClientReportlogs');
+// Route::get('reports/staffreportlogs/{from}/{to}/{user_id}', 'Reports\ReportsController@StaffReportlogs');

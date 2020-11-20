@@ -26,9 +26,9 @@ class AuthController extends Controller
      */
     public function login()
     {
-        $credentials = request(['username', 'password']);
+        $credentials = request(['email', 'password']);
 
-        if (! $token = auth()->attempt(array('is_deleted'=>0, 'username' => $credentials['username'], 'password' => $credentials['password']))) {
+        if (! $token = auth()->attempt(array('is_deleted'=>0, 'email' => $credentials['email'], 'password' => $credentials['password']))) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
         return $this->respondWithToken($token);

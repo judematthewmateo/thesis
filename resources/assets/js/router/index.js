@@ -13,17 +13,10 @@ import Page404 from "@/views/pages/Page404";
 import Page500 from "@/views/pages/Page500";
 import Login from "@/views/pages/Login";
 import Logout from "@/views/pages/Logout";
-// import RegisterStaff from "@/views/pages/RegisterStaff";
-// import RegisterClient from "@/views/pages/RegisterClient";
 
-import staff from "@/views/staff";
-import client from "@/views/client";
 
-import parts from "@/views/references/Parts";
-import departments from "@/views/references/Departments";
-import stafflists from "@/views/references/Stafflists";
-import clientlists from "@/views/references/Clientlists";
-
+import products from '@/views/product/Products'
+import orders from '@/views/order/Orders'
 
 import store from "../store";
 Vue.use(Router);
@@ -48,89 +41,43 @@ const router = new Router({
           }
         },
         {
-          path: "references",
-          name: "References",
+          path: 'product',
+          name: 'My Product',
           component: {
-            render(c) {
-              return c("router-view");
-            }
+            render (c) { return c('router-view') }
           },
 
-          children: [{
-
-
-              path: "departments",
-              name: "Departments",
-              component: departments,
-              meta: {
-                requiresAuth: true
-              }
-
-            },
+          children: [
             {
-              path: "clientlists",
-              name: "Clients",
-              component: clientlists,
-              meta: {
-                requiresAuth: true
-              }
-
+              path: 'Products',
+              name: ' ',
+              component: products,
+              meta: {requiresAuth: true}
             },
-            {
-              path: "stafflists",
-              name: "Staffs",
-              component: stafflists,
-              meta: {
-                requiresAuth: true
-              }
+          ]},
 
+
+
+          {
+            path: 'order',
+            name: 'My Shop',
+            component: {
+              render (c) { return c('router-view') }
             },
-            {
-              path: "parts",
-              name: "Parts",
-              component: parts,
-              meta: {
-                requiresAuth: true
+  
+            children: [
+              {
+                path: 'Orders',
+                name: 'Orders',
+                component: orders,
+                meta: {requiresAuth: true}
               },
-            }
-
-          ]
-        },
+            ]},
+        
 
       ]
     },
 
-
-
-
-    // {
-    //   path: "/registerstaff",
-    //   name: "Register Staff",
-    //   component: RegisterStaff
-
-    // },
-    {
-      path: "/staff",
-      name: "Staff",
-      component: staff,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: "/client",
-      name: "Client",
-      component: client,
-      meta: {
-        requiresAuth: true
-      }
-    },
-
-    // {
-    //   path: "/registerclient",
-    //   name: "Register Client",
-    //   component: RegisterClient
-    // },
     {
       path: "/login",
       name: "Login",

@@ -8,8 +8,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    protected $table = 'b_users';
-    protected $primaryKey = 'user_id';
+    protected $table = 'sumr';
+    protected $primaryKey = 'sumr_hash';
     use Notifiable;
     public $timestamps = false;
 
@@ -34,7 +34,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     protected $fillable = [
-        'username', 'password',
+        'email', 'password',
     ];
 
     /**

@@ -6,7 +6,7 @@
       @click="mobileSidebarToggle"
     >&#9776;</button>
     <b-link class="navbar-brand" to="/dashboard">
-      <img class="navbar-brand-full" src="images/jdev-logo.png" width="120%" height="110%" alt="a" />
+      <img class="navbar-brand-full" src="images/azspreelogo.png" width="120%" height="110%" alt="a" />
       <!-- <img class="navbar-brand-minimized" src="uploads/logo/logo" width="30" height="30" alt="a"> -->
     </b-link>
     <button
@@ -33,7 +33,7 @@
         <template slot="button-content">
           <!-- image -->
           <!-- <b-img :src="$store.state.user.path" class="img-avatar"></b-img> -->
-          <span class="d-md-down-none">{{$store.state.user.firstname}}</span>
+          <span class="d-md-down-none">{{$store.state.user.seller_name}}</span>
         </template>
         <b-dropdown-item @click="$router.push({name: 'Profile'})">
           <i class="fa fa-user-o"></i>Profile
